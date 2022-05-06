@@ -1,0 +1,14 @@
+
+# Workflow
+
+NOT WRITTEN YET.
+
+Will cover:
+
+* RStudio projects
+* Size of user-defined functions
+* Linking scripts together and `source()`
+* R Markdown
+* Git
+* User-written packages
+* Example of my workflow

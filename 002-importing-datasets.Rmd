@@ -1,0 +1,113 @@
+# Obtaining data
+
+Most R data analysis involves working on data that is read from somewhere. This chapter covers ways of reading data, and where to store them.
+
+## Common functions for importing data
+
+Common functions for importing data include:
+
+* <u>read.table()</u> from base R. Reads most types of text files.
+* <u>read.csv()</u> from base R. A version of read.table() specifically for csv files.
+* <u>read.xlsx()</u> from the <u>openxlsx package</u>. Reads a worksheet from an excel file, including from an online source (i.e. the location is a website).
+* <u>fread()</u> from the <u>data.table package</u>. Reads a csv file in as a data table, much faster than read.csv().
+* <u>read_csv()</u> from the <u>readr package</u>, part of Tidyverse. Reads a csv file in as a tibble.
+* <u>read_excel()</u> from the <u>readxl package</u>, part of Tidyverse. Reads a worksheet of an excel file, in as a tibble. For online sources, `openxlsx::read.xlsx()` tends to be easier.
+
+<b>To save data</b> from your R session to a local location in a common file format, use the functions above but replace `read` with `write`, for example, `write.csv()`.
+
+<b>To save R objects for use in a later R session</b>, read and write them as a '.rds' file type using `readRDS` and `writeRDS`. 
+
+## Where to save data
+
+There are three options for specifying where to save data:
+
+1. **Bad**: Use `setwd()` to set a working directory for your R session. R will then treat addresses as subfolders within that directory, so the full address does not need to be written.
+    * This is generally discouraged because it gives your script an external dependency that reduces the flexibility of your work. For example, others will probably not be able to run your code on their machine.
+2. **Good**: Use an <u>RStudio project</u>, which bundles related script/s and files in a self-contained folder that can be moved and run anywhere. R treats the project folder as the working directory regardless of where the project folder is put. R projects are an R Studio feature and are discussed further in Section [X].
+3. **Sometimes necessary**: write the full filepath of the location. This is required if you need to write to a specific location on your machine/network.
+
+
+```{r eval=FALSE}
+### Reading and writing data from local location
+# Gets the location of your script. Just so the example works in this setting.
+local_folder <- dirname(rstudioapi::getSourceEditorContext()$path)
+# Write the iris dataset as a local csv file. Double click the saved file to check it's
+#   been written.
+write.csv(iris, file=paste0(local_folder, '/iris_dataset.csv'), row.names=FALSE)
+# Read it back into your R session
+iris_dataset <- read.csv(paste0(local_folder, '/iris_dataset.csv'))
+str(iris_dataset)
+# (Remove the saved file jsut to clean up)
+file.remove(paste0(local_folder, '/iris_dataset.csv'))
+### Reading data from online
+# Uncomment and run next line if openxlsx package has never been installed
+#install.packages('openxlsx')
+mysuper_data_locn <-
+  paste0('https://www.apra.gov.au/sites/default/files/2022-03/',
+         'Quarterly%20MySuper%20statistics%20September%202019%20-%20December%202021.xlsx')
+sheet_name <- 'Table 1a'
+mysuper_data <- openxlsx::read.xlsx(xlsxFile=mysuper_data_locn, sheet=sheet_name, 
+                                    startRow=4)
+# These data need to be cleaned (e.g. rows removed, columns renamed) before they're
+#   usable. But just look at a bit of it to see that the data pull worked.
+dim(mysuper_data)
+mysuper_data[1:5, 1:5]
+
+```
+
+## Setting up an RStudio project
+
+RStudio projects are suitable for all coding tasks. The project creates a folder that contains the scripts and other files used for that task, such as locally stored datasets.
+
+To create an RStudio project:
+
+1. Open RStudio, click 'File', 'New Project', 'New Directory', then 'New Project'. Write a name for the project folder ('Directory name'), then click 'Browse' and pick a folder to put the project folder in (anywhere is fine), then click 'Create Project'.
+2. The empty project wll open, and the 'Files' tab in the 'Files, Plots, Packages, ...' pane will show no files in the project folder aside from the '.Rproj' file you just created. In a sense this file coordinates the other files in the project.
+3. Click ctrl + shift + N to open a new script, then click 'File' then 'Save As' to save it into your project folder and give it a name. It will then appear in the 'Files' window.
+4. The project folder is now the working directory to which any R scripts in that folder reference.
+5. Move any other files or scripts that are for that task into the project folder.
+
+The following code works fine in a script in an RStudio project. It puts the data in the project folder then reads it back from the project folder. 
+
+```{r eval=FALSE}
+### Don't run this code unless you're in an RStudio project. Not sure where it will put
+###   the csv file otherwise.
+write.csv(iris, file='iris_dataset.csv', row.names=FALSE)
+iris_dataset <- read.csv('iris_dataset', row.names=FALSE)
+```
+
+A key benefit of RStudio projects is that it keeps your task self contained. It will keep working if you move it to another folder (as long as you move the whole project folder) or if you give it to someone else.
+
+
+### When to use packages instead of projects
+
+Creating and working in a package is an alternative to working in a project. A package is a collection of functions intended to be easily shared with others, stored in a self-contained bundle like a project. Packages are useful when the point of your work is to allow others to use your code without having to think about how your code works. 
+
+Keep the option in mind, but as a data analyst, you'll probably find that most of your work does not fit in that category. Packages are a bit more complicated to set up and use, and impose some requirements on what files and scripts you use, and where you put them. So unless you want the practice, projects are in many cases a more suitable option. 
+
+Sometimes it's important that the analyst that runs the code has reasonable familiarity with how the code works, in which case a package is unsuitable. A common example is code that comprises a model that has assumptions that would be misapplied if the user does not understand them. In these cases the primary benefit of developing a package -- preventing the user from having to deal with the underlying code -- turns into a cost. 
+
+<!--
+
+## Automating data sourcing
+
+If the data being sourced get updated -- e.g. when new time periods become available -- and the coding outputs warrant updating in response, the code should point directly to that source. In other words, use R to grab the data from its source rather than downloading it manually. 
+
+Automating data updates in this ways requires a couple of things:
+
+* The format of the source data does not change with the updates. It will be difficult to make your code robust to updates if this isn't the case.
+* The code is flexible enough to continue to work as intended as the source data get updated. This requires forward thinking about how the processes would be affected by changes to the data.
+    * *Careful*: If something does not work as intended, your results are likely to inherit mistakes and you won't necessarily notice. You can incorporate testing, or write your code to intentionally stop running when it encounters these situations, to prevent this from happening.
+
+
+In other cases, you could manually save a copy of the source data locally and write your code to read that local version. Where you can, <u>save your data in simple text files (e.g. csv)</u> rather than in Excel files. Excel files take up more space and have unnecessary complexity that can make things more difficult.
+
+I often use a middle ground process:
+
+1. Write a setting into your code that allows you to specify whether you want to import from the raw data.
+2. When this setting it switched on, have your code import the source data, potentially do some formatting, and then save it locally.
+3. When the setting is switched off, have your code read from the locally saved dataset.
+4. Switch the setting on each time you want to get the latest update of the source data. 
+5. Have the setting switched off every other time you run your code.
+
+-->

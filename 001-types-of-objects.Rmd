@@ -1,0 +1,477 @@
+# Types of data objects {#object-types}
+
+Objects are pieces of data that are named and stored in R's environment, ready for your code to call upon. There are three main types of data objects:
+
+* **Vectors** store a single variable. They are R's most fundamental type of data object.
+* **Data frames** -- including popular subtypes 'data tables' and 'tibbles' -- store datasets, that is, collections of related variables. **Arrays** are a related object type to data frames, and will also be discussed.
+* **Lists** are a more-flexible vector type whose elements can each be any object type (e.g. each element of a list can be a different dataset).
+    * *Careful*: Sometimes lists are also called vectors, with single-variable vectors distinguished as 'atomic vectors'. This document will only use 'vector' to mean single-variable vectors.
+
+<b>Indexing</b> is an essential operation that involves extracting a piece of a data object. Indexing is also used to modify objects, by assigning something to the indexed part of the object. 
+
+<b>Functions</b> are another important object type. Functions do things to data objects. Most lines of R code include at least a data object and a function. Functions are discussed in section \@ref(functions).
+
+This chapter covers the types of data objects mentioned above and how to index them, followed by a brief section on if statements and for loops.
+
+## Vectors
+
+<b>A vector stores any number of observations of a single variable</b>. In other words, a vector is a one-dimensional collection of data in which every element is the same type of data (e.g. numbers versus text). <b>Vectors are the most fundamental type of data object in R</b>. The smallest unit of data is a one-element vector. If you type `1 + 3` into the console, R treats 1 and 3 as single-element vectors and returns a single-element vector containing 4.
+
+Some preliminaries:
+
+* <u>Coercion</u>: If you try to put different types of data in the same object, R will typically coerce those data to be the same type. For example, any numbers put alongside text will get treated as text (so math won't work on them).
+* <u>Missing or invalid data</u> are stored as `NA` for the missing elements. These can exist in any vector type and will typically produce another `NA` when operated on. 
+    * `NaN` (not a number) is like `NA`, but represents the outcome of an impossible mathematical operation (e.g. `log(-1)`).
+* <u>Empy vectors</u>: `NULL` represents a vector that exists in the environment but contains nothing.
+
+**The most important vector types are**:
+
+* Numeric. Contain numbers.
+* Character (AKA strings). Contain words or other text.
+* Factor. Contain categorical variables.
+* Logical (AKA Boolean). Contain special element types `TRUE` and `FALSE`.
+* Dates.
+
+### Numeric vectors
+
+Numeric vectors permit mathematical operations. Here numeric vectors also refers to vector subtypes such as integers. 
+
+Things to know:
+
+* `Inf` is a numeric value representing infinity -- e.g. try typing `1 / 0`.
+* <u>Scientific notation</u>: for shorthand, values can use `e` to denote how many powers of 10 the number is. For example `1.2e6` is 1.2 million and `3e-4` is 0.0003. 
+   
+   
+```{r eval=FALSE}
+### Numeric vectors
+num_vec1 <- c(6, 8, -1, 10.2)  # c() function (combine) creates a vector from the inputs 
+identical(c(2), 2)  # (Single-element vectors don't need to be created in c(), but can be) 
+num_vec1
+str(num_vec1)  # Summarises the structure of num_vec1
+length(num_vec1)
+num_vec1 / 3
+num_vec2 <- runif(n=5, min=-10, max=10)  # Randomly draws from the uniform distribution
+num_vec2 ^ 2
+num_vec1 + num_vec2  # Won't operate (or recycle) due to different vector lengths
+# Note that line 11 worked because the vector '3' was recycled 5 times. Recycling was 
+#   allowed in that instance because length 4 is a multiple of length 1.
+num_vec3 <- runif(n=4, min=-10, max=10)
+num_vec1 + num_vec3  # Works because same vector length
+
+### NA examples
+na_num_vec <- c(1:5, NA, 7:10)  # The : operator generates a vector of integers.
+str(na_num_vec)
+na_num_vec + 1:10  # Operations on NA typically produce another NA
+sqrt(c(9, 4, 1, 0, -1))
+```
+
+### Character vectors
+
+Character vectors can contain letters, spaces, symbols, numbers, etc. Each element is surrounded by inverted commas (either single or double, makes no difference). 
+
+Things to know:
+
+* Powerful functions for modifying or searching character vectors include `paste()`, `grep()`, `gsub()`, `substr()` and `nchar()`.
+* When `NA` appears in a character vector, it appears as `<NA>`.
+
+```{r eval=FALSE}
+### Character vectors
+char_vec1 <- c('put', 'any', 'TEXT', 'at all', 'in', 'here.')
+char_vec1
+str(char_vec1)
+char_vec2 <- letters  # 'letters' is an in-built vector containing the alphabet.
+char_vec3 <- head(char_vec2, n=length(char_vec1))  # Takes the first n elements
+char_vec4 <- paste(char_vec1, char_vec3, sep='_')  # Concatenates the two vectors
+char_vec4
+# Which elements of char_vec4 have the letter 'a' in them?
+grep('a', char_vec4)  # 1st, 2nd and 4th elements
+# Replace letter 'a' with text '_REPLACED_'
+char_vec5 <- gsub('a', '_REPLACED_', char_vec4)
+char_vec5
+# Take the first two characters from each element
+substr(char_vec5, start=1, stop=2)
+
+# Example of vector coercion
+num_vec1 <- c(6, 8, -1, 0)
+coerced_vec <- c(num_vec1, char_vec1)
+str(coerced_vec)  # The numbers have been coerced into characters
+```
+
+### Factor vectors
+Factors are a compressed (i.e. more efficient) version of characters, for when elements of a character vector are repeated. Think of a categorical variable such as a rating with levels ‘high’, medium’ or ‘low’. Behind the scenes, R stores a mapping of the factor levels into integers, and then stores the full factor vector as a vector of integers.
+
+<u>Warning</u>: Do not convert factors into numerics. It will give you these ‘keyed’ integers but discard the key. It is safe, however, to convert factors to characters, which will produce the factor levels as a character vector.
+
+```{r eval=FALSE}
+### Factor vectors
+fac_vec <- as.factor(c('high', 'medium', 'low', 'medium', 'low', 'high', 'high'))
+str(fac_vec)
+levels(fac_vec)
+as.numeric(fac_vec)
+as.character(fac_vec)
+```
+
+### Logical vectors
+
+A logical vector is a binary variable that contains only the values `TRUE` and `FALSE` (not in inverted commas), which can be shorted to `T` and `F`. Logical vectors are very useful for indexing. They are also used in `if` statements. 
+
+Some common operators for producing logical vectors are:
+
+* `!` means 'not' -- when in front of a logical vector, it flips `TRUE` to `FALSE` and vice versa.
+* `==` returns `TRUE` if the elements are the same and `FALSE` if not. `!=` means 'not equal to', which flips it.
+* `<` (less than), `<=` (less than or equal to), `>` and `>=` produce `TRUE` and `FALSE` as you'd expect, on numeric variables. They treat character vectors as ordered alphabetially (e.g. `'a' > 'b'` gives `FALSE` and `'a' < 'b'` gives `TRUE`). Do not use them on factors -- you can probably guess the reason.
+* `%in%`, used like `vec1 %in% vec2`, returns `TRUE` for elements of `vec1` that are present in `vec2` and FALSE for elements not in `vec2`.
+* `&` (and) and `|` (or) return a single vector stating whether both were true or either were true.
+* `which()` is a function that converts a logical vector into an integer vector stating the positions of `TRUE` elements.
+    
+```{r eval=FALSE}
+### Logical vectors 
+log_vec1 <- c(TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, TRUE)
+str(log_vec1)
+which(log_vec1)  # which() returns an integer vector of the positions of TRUEs
+log_vec1 * 2  # T and F are converted to 0 and 1 when mathematical oeprations are applied
+sum(log_vec1)  # So the sum of a logical vector is how many TRUEs are in it
+log_vec2 <- c(1, 2, 5, 6, 3, 7, -1) < 4  # Logical vectors can be created by conditions
+identical(log_vec1, log_vec2)
+log_vec3 <- c(2, 2, 3, 2.5, 2, -2, 2) == 2
+identical(log_vec1, log_vec3)
+identical(log_vec1, !c(F, F, T, T, F, T, F))  # The operator ! flips TRUE and FALSE.
+even_numbers <- seq(0, 100, by=2)
+(1:5) %in% even_numbers  # Example of %in%. Result is always same length as LHS vector.
+
+```
+
+### Date vectors
+
+IMPROVE THIS.
+
+There are several types of date vectors in R. The simplest -- but not necessarily best -- way to deal with dates is store them as character vectors, always using the format 'yyyy-mm-dd'. Some characteristics of this approach:
+
+* <u>Simple</u> -- no package dependencies, no type-specific behaviour to understand. Just keep an eye out that R does not try to convert the vector into a factor or a non-character date format.
+* <u>Correct ordering</u>: for example, `2021-02-01 > 2021-01-31` reliably returns TRUE -- and this works correctly correctly for all dates -- because R views characters as alphabetically ordered. That is, R checks left to right along the 10 positions in each character, and as soon as there's a position where one character is greater than then other (e.g. `'b'` is greater than `'a'`; `2` is greater than `1`), it determines that to be the higher character vector element.
+* <u>Unintelligent</u>: While this will order dates correctly, it will not be able to tell you how many days/months/years difference there is between two dates. Other date types can do that.
+* <u>But easy to make smarter</u>: It's easy to write functions that manipulate these dates in useful ways. See section \@ref(functions-user-defined-functions) for an uncomplicated  function that converts any of these dates to a quarter end.
+* <u>Can be slow</u>. For large datasets, it can be slow relative to other date types, for the same reason than factor vectors are more memory efficient than character vectors.
+
+
+<!-- This page looks like a good info source: https://shanghai.hosting.nyu.edu/data/r/dates-and-times.html -->
+
+
+
+### Vector-wise operations and recycling
+
+<b>Operations on vectors run element by element</b>. To understand what this means, run the code chunk below.
+```{r eval=FALSE}
+seq(1, 5, by=1)
+seq(1, 5, by=1) * seq(1, 5, by=1)
+# The result from an operation on two vectors, e.g. y1 <- x1 * x2, is vector where:
+#   - The first element of y1 is the product of the first elements of x1 and x2,
+#   - The second element of y1 is the product of the second elements of x1 and x2,
+#   - etc.
+```
+<b>Vector-wise operations still work if the two vectors have different lengths.</b> There are two ways this can happen:
+
+* <b>Good</b>: one of the vectors is length one, for example the `2` in `seq(1, 6, by=1) / 2`. This is handy and is used a lot.
+* <b>Bad</b>: the vectors have different lengths, but neither is length one, for example `seq(1, 6, by=1) / c(2, 3)`.
+    * <u>Recycling</u>. In this case, R recycles the shorter vector by repeating it until it's the length of the longer vector. In some but not all cases a warning is shown on screen.
+    * <u>Avoid this type of recycling</u>. It's better for your code to be more explicit about what it's doing. So, for example, write `seq(1, 6, by=1) / rep(c(2, 3), 3)` instead of `seq(1, 6, by=1) / c(2, 3)`.
+    * Some packages don't let you recycle, for this reason.
+
+### Named vector elements
+
+Vector elements can have names. Elements can be named when the vector is created, using `=` with the names on the LHS, or they can be assigned afterward.
+
+```{r eval=FALSE}
+# Name the elements when the vector is created
+num_vec_named1 <- c(a=1, b=2, c=3, d=4, e=5)
+num_vec_named1
+str(num_vec_named1)
+names(num_vec_named1)
+# Create an unnamed vector, then assign names to it.
+num_vec_named2 <- 1:5
+str(num_vec_named2)
+names(num_vec_named2)
+names(num_vec_named2) <- c('a', 'b', 'c', 'd', 'e')
+str(num_vec_named2)
+```
+
+
+
+### How to index vectors
+
+Indexing is for extracting a subset of an object. Vectors are indexed using `[]`. For example, `num_vec[2]` returns just the second element of `num_vec`, and `num_vec[c(2, 4)]` returns the second and fourth elements. (The first position of a vector is 1, not 0 as in some other languages.)
+
+Inside `[]` can be one of:
+
+* <u>An integer vector</u>, specifying the positions of the elements to extract.
+* <u>A logical vector</u>, where the `TRUE`s in the logical vector specify which elements to extract. 
+    * <u>A powerful tool</u>: To extract elements based on a condition, create and index with a logical vector in a single step. Examples in the code below.
+    * <u>Length of the indexing vector</u>. The logical vector in the index operators should be the same length as the vector being indexed. If it isn't, and it still works (i.e. no error), the logical vector has been 'recycled' to the length of the indexed vector.
+* <u>A character vector of names</u>, which extracts the elements with those names.
+
+Note that `num_vec[2, 4]` does not work because it is providing the index operators *two* vectors (`2` and `4`) rather than one as in the case of `num_vec[c(2, 4)]`.
+
+<b>Indexing best practice</b>: once you get going with R, always try to avoid indexing with integers, for any object type. This is because often you want to add elements to vectors (and to other object types) which can end up changing element positions. Integer indexing can then return the wrong thing. If you instead index using names or conditions (i.e. logical vectors), your code will be more flexible and robust.
+
+<b>Combine indexing with assignment</b> to modify parts of an existing object. For example, `num_vec[c(3, 4)] <- 0` changes the third and fourth elements to zero.
+
+
+```{r eval=FALSE}
+num_vec1 <- runif(25, min=-1, max=1)  # Create random uniform vector length 25
+num_vec1
+num_vec1[1]  # Index with integer to extract the first element
+num_vec1[c(1, length(num_vec1))]  # Integers to extract first and last elements
+num_vec2 <- num_vec1[num_vec1 >= 0]  # Extract only the positive components
+num_vec2
+# Give the elements names and extract based on that
+names(num_vec1) <- letters[1:length(num_vec1)]  # 'letters' contains a to z
+num_vec1[c('a', 'y')]
+# Create an arbitrary vector with some NAs in it
+num_vec3 <- c(6, 2, NA, 3.5, 11:9, NA, rep(-1, times=4), NA, seq(20, 30, by=2))
+num_vec3
+# Remove the NAs by creating a logical vector and indexing with it
+num_vec4 <- num_vec3[!is.na(num_vec3)]
+num_vec4
+# Or alternatively, combine indexing and assignment to change all the NAs to zero
+num_vec4 <- num_vec3
+num_vec4[is.na(num_vec4)] <- 0
+num_vec4
+
+```
+
+The other two main indexing operators are `[[]]` and `$`. We'll come back to them. 
+
+
+## Arrays
+
+
+An array is a multi-dimensional vector. For example, an array with two dimensions is a matrix, similar to the concept in mathematics. Data frames tend to be more useful than arrays, but arrays are worth a quick look, because data-frame indexing builds from array indexing. Arrays are also useful for mathematical operations. For simplicity let's just look at two dimensional arrays (i.e. matrixes).
+
+Some things worth knowing about arrays:
+
+* <u>Single data type</u>. Like vectors, arrays can only contain a single data type, either numeric, character or logical.
+* <u>Arrays are indexed with a vector for each dimension, separated by commas</u>. For example, in `matrix1[vec1, vec2]`, `vec1` specifies the rows to extract and `vec2` the columns.
+   * To extract some rows and all columns, or vice versa, leave one of the dimension indexes blank, e.g. `[vec1, ]` or `[, vec2]`
+* Array elements cannot be individually named, but arrays can have column names, or row names, or both.
+* <u>Dimension attribute</u>. Arrays have an attached dimension attribute, which is a vector of integers specifying how many dimensions the array has (the length of the integer vector), and how many rows/columns/etc are in each dimension (the integers in the vector).
+   * You only see the dimension attribute it you specifically call it up.
+   * It would be reasonable to expect that vectors have a single-element dimension attribute, being an integer stating the length of the vector, but they don't. Vectors have no dimension attribute.
+
+
+```{r eval=FALSE}
+### Arrays
+num_array1 <- matrix(seq(10, 200, by=10), nrow=5, ncol=4)  # matrix() creates a 2D array
+str(num_array1)  # [1:5, 1:4] shows it's an array, with rows 1 to 5 and cols 1 to 4.
+dim(num_array1)  # Dimension attribute is a two-element vector of integers.
+num_vec1 <- seq(10, 50, by=10)
+dim(num_vec1)  # Vectors don't have a dimension attribute
+num_array1 %*% 1:4  # Arrays allow matrix algebra. Matrix products are %*% (outer are %o%)
+# Column and row names
+num_array_named <- matrix(seq(10, 200, by=10), nrow=5, ncol=4)
+colnames(num_array_named) <- letters[1:4]
+rownames(num_array_named) <- c('row1', 'row2', 'row3', 'row4', 'row5')
+num_array_named
+# Indexing 
+num_array1[c(2, 4), ]  # To include all columns, leave the column index empty
+num_array1[, c(2, 4)]  # Vice versa for all rows
+num_array_named['row2', 'c']  # Index with row and column names
+num_array_named[2, c(3, 4)]  # Index with row and column integers
+num_array_named[1:2, c('a', 'b')]  # Index with row integers and column names
+```
+
+The base R 'Titanic' dataset gives an example of an multi-dimensional array -- it has 4 dimensions. It has a matrix for each value of {Adult, Child}, and for each value of {Survived Yes, Surivived No}.
+
+```{r eval=FALSE}
+Titanic
+dim(Titanic)
+Titanic[, , , 'Yes']  # Slice only 1 val from 4th dimension to return 3D object
+Titanic[, , 'Adult', 'Yes']  # Slice vals from 3rd and 4th dimensions to return 2D object
+Titanic[, 'Female', 'Adult', 'Yes']  # Return 1D object (i.e. vector)
+Titanic['Crew', 'Female', 'Adult', 'Yes']  # Return zero dimension object (i.e. scalar)
+
+```
+
+
+## Data frames
+
+<b>A data frame stores a dataset.</b> It's likely to be the object type you use most. You may have seen the data object types **data tables** (from the data.table package) or **tibbles** (from the dplyr pckage), which are both types of data frames. They have some improved characteristics and added functionality. The following information is about base R data frames, but also applies to data tables and tibbles.
+
+Some characteristics of data frames:
+
+* A data frame is <u>a collection of same-length vectors</u>, laid out as columns.
+* <u>Columns can be different data types</u> (unlike arrays).
+* The <u>columns usually have names</u> (e.g. the names of the variables in the dataset).
+* Data frames can be <u>indexed like arrays</u>. When using square brackets `[, ]`, there is space for two arguments, which must be either integer or logical vectors specifying the elements to extract, or a character vector containing the names of the columns (or rows) to extract.
+* Data frame columns can also be <u>indexed with the dollar symbol</u> `$`. 
+* Data frames (in base R) can have row names but it's typically considered best practice to not use them.
+
+```{r eval=FALSE}
+### Dataframes
+# Base R comes with a few example datasets, including a data frame called 'iris'. 
+#   (Run 'data()' to see all example datasets.)
+df1 <- iris
+head(df1)  # Head and tail pull out the beginning and end of data frames (or vectors).
+tail(df1, 10)  # The second argument is how many to show. Default is 6.
+dim(df1)
+str(df1)
+colnames(df1)
+# Indexing a single column returns it as a vector
+head(df1$Species)
+df1$Sepal.Length[2:3]
+# Indexing multiple columns returns a smaller dataframe
+df2 <- df1[1:11, grepl('Petal', colnames(df1))]
+str(df2)
+# Index the rows with a logical vector that conditions on a column
+df1[df1$Sepal.Width > 3.5, ]
+# Say we know virginica cannot have sepal width above 3.5, so they must be errors.
+df_corrected <- df1
+df_corrected[df_corrected$Sepal.Width > 3.5, 'Species'] <- NA
+df_corrected
+
+```
+
+
+## Lists
+
+<b>A list is a collection of any R objects.</b> A list is like a vector, in that it is a one-dimensional collection of elements. However, the elements can each be anything (e.g. a whole datasets, or another list), and, within the same list, can be different types of objects. 
+
+Some characteristics of lists:
+
+* List elements can have names.
+* Lists can be indexed with a single integer/logical/character vector inside`[ ]`, just like how vectors are indexed.
+* If the elements are named, they can also be indexed with `$`.
+* A single element of a list can also be indexed with `[[ ]]`. 
+    * This is slightly different to indexing a single element with `[]`. Double brackets return the element as its own object type; single brackets return a one-element list with the object inside it.
+
+\emph{Careful}: indexing with `$` uses partial matching, which can cause mistakes if you don't keep careful track of your names (which most don't). TO avoid this you can write `options("warnPartialMatchDollar"=TRUE)` at the beginning of your scripts, so that you get a warning whenever partial matching is used.
+
+
+```{r eval=FALSE}
+### Lists
+# Put several types of objects into the same list 
+num_vec1 <- c(6, 8, -1, 10.2) 
+char_vec1 <- c('put', 'any', 'TEXT', 'at all', 'in', 'here.')
+num_array1 <- matrix(seq(10, 200, by=10), nrow=5, ncol=4)
+list1 <- list(num_vec1, char_vec1, num_array1)
+list1
+str(list1)
+# Index the list a few different ways
+list1[c(1, 2)]  # Returns a two-element list
+list1[2]  # Returns a one-element list containing only the second element
+list1[[2]]  # Returns the vector inside the second element
+list1[[c(1, 2)]]  # CAREFUL - a vector inside [[]] does not do what you might expect. This
+#   takes the second element of the first element, not the first and second elements.
+list1[is.numeric(list1)]
+# Give the list names
+names(list1) <- c('num_vec1', 'char_vec1', 'array1')
+str(list1)
+# Index it with the names
+list1$char_vec1
+list1['char_vec1']
+list1[['char_vec1']]
+# Combine assignment with indexing to modify an element
+list1$char_vec1 <- c('You', 'can', list1$char_vec1)
+list1[['char_vec1']]
+# Combine indexing and assignment to add an element
+list1$num_vec2 <- 100:109
+str(list1)
+# Index with a logical vector, to pull out any elements with 'vec' in their name.
+list1[grepl('vec', names(list1))]
+
+```
+
+
+## 'If' statements and 'for' loops
+
+If statements and for loops both fall in the category of 'control flows'. Another type of loop not covered here is the 'while' loop, which is like a or loop, but stops iterating until some condition is satisfied.
+
+### If statements
+
+An if statement is essentially a chunk of code gated off by a switch. If the switch is set to `TRUE` the code runs, and if it's set to `FALSE` it doesn't. If statements always look something like:
+
+```{r eval=FALSE}
+# This code won't actually run, it's just illustrative
+if(<single-element logical vector>) {
+  <one or more lines of code>
+}
+# or
+if(<single-element logical vector>) <single line of code>
+```
+
+Some working examples:
+
+```{r eval=FALSE}
+run_code <- FALSE
+x <- 1
+y <- 100
+if(run_code) {
+  x <- x + 1
+  y <- y + 1
+}
+x
+y
+# Again but the statement is not bypassed
+run_code <- TRUE
+if(run_code) {
+  x <- x + 1
+  y <- y + 1
+}
+x
+y
+# If statements are typically most useful when the TRUE/FALSE is generated within 'if()'
+x <- rnorm(100)
+summary(x)
+if(any(x > 1.5)) x <- x - 0.5
+summary(x)
+
+```
+
+The `ifelse()` function works similar to an if statement. Functions are discussed further in section \@ref(functions).
+
+### For loops {#object-types-loops}
+
+**For loops iteratively apply the same operation to multiple things.** For loops produce the results from one iteration before stepping to the next, and are most useful when the operations need to use results from previous iterations. 
+
+Alternatively, when each iteration can be run independently, there are usually better ways than using a for loop. Namely, 'vectorised' functions, which do the same thing to every element in a vector, or the 'apply' family of functions (see section \@ref(functions-apply)), which apply a chosen function to every element in some other object. These alternatives tend to run faster -- sometimes by a lot -- and keep the code cleaner and more reliable.
+
+For loops always look something like:
+
+```{r eval=FALSE}
+# This code won't actually run, it's just illustrative
+for(<arbitrary name> in <loop vector>) {
+  <line/s of code to run in each iteration>
+  <code should reference 'abritrary name'>
+}
+```
+
+In the first iteration, the code inside the loop treats replaces the 'arbitrary name' object with the first element in the 'loop vector', in the second iteration it's replaced with the second element, and so on for all elements of the loop vector.
+
+
+```{r eval=FALSE}
+# Inappropriate use of a for loop
+x <- 1:100
+x_log1 <- c()  # Set up an empty vector
+for(i in 1:length(x)) {
+  x_log1[i] <- log(x[i])
+}
+plot(x, x_log1)
+# Better alternative: log() is vectorised, so the loop is not needed.
+x_log2 <- log(x)
+plot(x, x_log2)
+# Potentially appropriate use of a for loop - turning a vector into cumulative
+x_cumul1 <- c()  # But this runs slower than doing it as in the next line
+x_cumul1 <- rep(NA, length(x))  # Faster if the initialised object has the correct length
+x_cumul1[1] <- x[1]
+for(i in 2:length(x)) x_cumul1[i] <- x_cumul1[i-1] + x[i]
+# But still not a great way, because there's a vectorised base R function for that.
+x_cumul2 <- cumsum(x)
+identical(x_cumul1, x_cumul2)
+```
+
+<!-- In the above, could demonstrate the speed differences, could also give an example of when a loop actually is useful. -->
+
+
+
+
+
+

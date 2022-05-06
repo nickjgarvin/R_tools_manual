@@ -1,0 +1,349 @@
+
+# The data.table and magrittr packages {#data-table-and-magrittr}
+
+This section covers two particularly useful packages: data.table and magrittr. 
+
+**The data.table package** brings in functionality, speed and neatness for working on datasets. 
+
+**The magrittr package** allows you to write your functions inside out, which makes it easy and neat to run a sequence of operations on a dataset in one go.
+
+## First load the two packages
+
+The code in the rest of this section assumes that you have data.table and magrittr loaded. If you haven't installed them already, or if you're not sure, run:
+
+```{r eval=FALSE}
+install.packages(c('magrittr', 'data.table'))
+```
+Now, whether you've loaded them in the past or not, load them into your *current* session by running:
+```{r eval=FALSE}
+library(magrittr)
+library(data.table)
+```
+
+## The magrittr package, AKA pipes
+
+The magrittr packages brings in the **pipe operator** `%>%`. It does one thing: permits a function argument to be written before the function, to make your code look nicer. For example:
+
+```{r eval=FALSE}
+unique(cars$speed)  # Calling 'unique()' the usual way
+cars$speed %>% unique() # The pipes way. Gives exactly the same result.
+```
+It works on any number of nested functions, and reads from left to right, so the result from calling one function is the argument in the next:
+```{r eval=FALSE}
+median(unique(cars$speed))
+cars$speed %>% unique %>% median  # Brackets after the function names are not necessary
+```
+You can feed other arguments into the functions:
+```{r eval=FALSE}
+cars$speed %>% unique(incomparables=c(24)) %>% median
+```
+By default, the object to the left of `%>%` is the *first* argument in the function to the right, but it does not need to be. Just use a dot `.` to state which argument you want it to be:
+```{r eval=FALSE}
+cars$speed %>% unique %>% median %>% c(1, .)
+```
+These examples feed a vector through the pipes, but pipes worth with any type of data object. Pipes with data tables are discusses in section [x].
+
+
+## The data.table package
+
+The data.table package introduces a new object type, called a data table, that is an extension of a data frame. It adds functionality, reduces the amount of code required, and executes code faster than other types of data frames. Syntactically, the main difference from base R is that more things can be done inside the index operators `[]`. It also introduces a new type of assignment operator `:=` for use inside the index operators.
+
+A benefit of data.table is that its help documentation is relatively thorough and easy to find:
+
+* The description of arguments in the help file (see `?data.table`) provides detailed information on what can be done inside `[]`.
+* The data.table FAQ page is good: https://cran.r-project.org/web/packages/data.table/vignettes/datatable-faq.html.
+
+Most things that work on data frames also work on data tables. The following lists some of the main additional features of data tables. There is additional handy information here: https://riptutorial.com/data-table.
+
+### Row and column indexing utilises shortcuts {#data-table-index-shortcuts}
+
+**Inside index operators `[]`, data tables recognise columns as separate named objects.**
+
+To index particular rows based on values in a column, data frames require writing (for example) `dataframe[dataframe$col1 > 2, ]`, whereas data tables accept `datatable[col1 > 2, ]`. This makes the code shorter (always a good thing), and easier to read and write. 
+
+Here's a more reproduceable example. It selects all rows from the iris dataset that have species equal to setosa and sepal length above 5.
+```{r eval=FALSE}
+# Set up data frame and data table to compare.
+dataframe1 <- iris
+datatable1 <- as.data.table(iris)
+str(dataframe1)
+str(datatable1)
+
+### Demonstration of data.table column recognition by name
+# The data frame way. To create the logical vector/s for indexing the desired rows, 
+#   the columns being conditioned on must first be extracted as a vector, with $.
+result_df <- dataframe1[dataframe1$Species == 'setosa' & dataframe1$Sepal.Length > 5, ]
+# The following doesn't work, because Species and Sepal.Length are not themselves 
+#   objects available in the environment.
+result_df <- dataframe1[Species == 'setosa' & Sepal.Length > 5, ]
+# The data table way. Inside [], columns are recognised as their own named objects.
+result_dt <- datatable1[Species == 'setosa' & Sepal.Length > 5, ] 
+```
+
+**The way it works** is that data.table basically opens its own local environment within the index operators `[]`. In this local environment, columns are recognised as objects.
+
+```{r eval=FALSE}
+dataframe1 <- iris
+datatable1 <- iris %>% as.data.table
+Sepal.Length <- rep(100, nrow(iris))  # Put object with same column name in global env.
+str(dataframe1[Sepal.Length == 100, ])  # Data frame uses that object
+str(datatable1[Sepal.Length == 100])  # Data table follows the environment hierarchy, 
+#   by first looking for (and finding) Sepal.Length inside [].
+# Note that when there's no argument after the comma in [, ], data.table lets you omit it
+```
+**Columns are treated like a list of vectors**
+
+Similar to rows, when indexing columns, the column names do not need to be provided as strings. The columns are recognised as objects.
+
+```{r eval=FALSE}
+dataframe1 <- iris
+datatable1 <- iris %>% as.data.table
+dataframe1[1:5, 'Species']
+dataframe1[1:5, Species]
+datatable1[1:5, Species]
+```
+The indexing above extracts the data table column and provides it as a vector. To retain the data table structure, write the column names inside a list. The list can include any number of columns.
+
+```{r eval=FALSE}
+datatable1 <- iris %>% as.data.table
+datatable1[1:5, list(Species)]
+datatable1[1:5, list(Species, Sepal.Length)]
+datatable1[1:5, .(Species, Sepal.Length)]  # data.table's [] recognise . as short for list
+```
+
+Data table's default column indexing does not always allow indexing columns with a logical vector. You may want to use this kind of indexing if you're systematic about how you name your columns. To get it to work with a data table, set data.table's `with` argument to `FALSE`. This makes the data table more like a data frame by switching off the way it treats `[]` as its own local environment.
+
+```{r eval=FALSE}
+df1 <- iris
+dt1 <- iris %>% as.data.table
+df1[1:5, grepl('Sepal.', colnames(df1))]  # Pull out columns with 'Sepal.' in name
+dt1[1:5, grepl('Sepal.', colnames(dt1))]  # Doesn't work properly by default in data.table
+dt1[1:5, grepl('Sepal.', colnames(dt1)), with=FALSE]  # Does now.
+```
+
+### The in-place assignment operator `:=` {#data-table-assignment}
+
+<u>Data.table's `:=` operator adds columns quickly</u>. It is probably the largest deviation from base R syntax, because the standard assignment operator `<-` is such a fundamental piece of R code. In-place assignment is used after the first comma in the indexing operator `[]` (i.e. 'j' in the help file). 
+
+The `:=` operator never removes existing columns. It either overwrites existing columns, if the name/s provided to the left are pre-existing columns, or adds new ones, if the name/s are not.
+
+```{r eval=FALSE}
+dt1 <- iris %>% as.data.table
+dt1[, sepal_area := Sepal.Length * Sepal.Width]
+dt1
+```
+
+To add multiple columns, provide the new columns in a list, and assign them to a character vector of new column names:
+```{r eval=FALSE}
+dt1 <- iris %>% as.data.table
+dt1[, c('sepal_area', 'petal_area') := 
+      .(Sepal.Length * Sepal.Width, Petal.Length * Petal.Width)]
+dt1
+```
+Since `:=` never removes existing columns, if the new column assigned is not as long as existing columns, it will be recycled to make it fit.
+
+```{r eval=FALSE}
+dt1 <- iris %>% as.data.table
+dt1[, avg_sepal_length := mean(Sepal.Length)]
+dt1
+```
+
+**In-place assignment brings significant speed benefits**
+
+When an object is modified by using `<-` to change some part of it, the assignment works by creating a whole new version of that object. The new version takes up a new space in memory, in addition to the previous version of the object. In-place assignment, on the other hand, is more memory efficient because it modifies the existing object in memory rather than creating a new one.
+
+The code below uses the `tracemem()` function to show the memory addresses of the object versions as assignment takes place. The long hexademical number displayed inside '<>' is the memory address.
+
+```{r eval=FALSE}
+dt1 <- as.data.table(iris)
+tracemem(dt1)
+dt1$new_col <- dt1$Sepal.Lenth + dt1$Sepal.Width
+tracemem(dt1)  # Standard assignment created a new memory location
+dt2 <- as.data.table(iris)
+tracemem(dt2)
+dt2[, new_col := Sepal.Length + Sepal.Width]
+tracemem(dt2)  # In-place assignment did not.
+untracemem(dt1)
+untracemem(dt2)
+```
+
+**Be careful -- this can change objects that you may not expect. Use `copy()` when in doubt.**
+
+It's easiest to demonstrate this with a simple example:
+```{r eval=FALSE}
+dt1 <- iris %>% as.data.table
+dt2 <- dt1
+dt2[, Sepal.Length := NA]
+dt1  # dt1 has also been changed!
+```
+
+In the example above, the assignment `dt2 <- dt1` did not take up any new space in memory (run `tracemem()` on both objects to see this). It did not need to, because it was just giving the object another name. This does not cause any issues when using standard assignment, because as soon as the `dt2` object is modified, the modified version will be given a new memory address.
+
+However, because in-place assignment modifies in place, it will modify the object regardless of what other names it has. <u>When in doubt, use `copy()` to make sure you're creating a new object</u>, if it could cause problems to modify an existing one.
+
+```{r eval=FALSE}
+dt1 <- iris %>% as.data.table
+dt2 <- copy(dt1)
+dt2
+dt2[, Sepal.Length := NA]
+dt1  # dt1 has not been changed because copy() gave dt2 a new memory address.
+```
+ 
+### Operations on <u>groups</u> of rows {#data-table-by}
+
+**First, observe how operations work without any row grouping**.
+
+As we saw in the in-place assignment examples, columns in a data table can be operated on after the comma in the indexing operator `[]`. When the operations are not combined with assignment, they just return the result of the operations.
+
+```{r eval=FALSE}
+dt1 <- iris %>% as.data.table
+dt1[1:5, Sepal.Length * Sepal.Width]
+```
+This is true regardless of the length of the vector created by the operation:
+```{r eval=FALSE}
+dt1 <- iris %>% as.data.table
+dt1[1:5, sum(Sepal.Length * Sepal.Width)]
+# Note that above, the row indexing is done first, so the result of the sum is coming 
+#   only from the first five rows of the data table.
+dt1[, sum(Sepal.Length * Sepal.Width)]  # This is using all rows.
+```
+
+**The <u>by</u> argument for grouping**.
+
+Data tables provide a simple way to perform such operations by groups of rows, the same way that `GROUP BY` works in SQL.
+
+For example, the following takes the mean sepal area for each species:
+```{r eval=FALSE}
+dt1 <- iris %>% as.data.table
+dt1[, mean(Sepal.Length * Sepal.Width), by=Species] 
+```
+To name the column that contains the results, generate it as a named list.
+```{r eval=FALSE}
+dt1 <- iris %>% as.data.table
+dt1[, .(avg_sepal_area = mean(Sepal.Length * Sepal.Width)), by=Species]
+```
+
+This works with multiple different operations, as long as they are grouped by the same column/s.
+
+```{r eval=FALSE}
+dt1 <- iris %>% as.data.table
+dt1[, .(avg_sepal_length = mean(Sepal.Length), 
+        avg_sepal_area = mean(Sepal.Length * Sepal.Width)), 
+    by=Species]
+```
+
+Operations can be grouped by multiple columns, which makes the grouping more granular. Say we want take take the mean sepal length by species, but take separate means for observations with sepal width above and below the median.
+
+```{r eval=FALSE}
+dt1 <- iris %>% as.data.table
+# Create a new column for above or below median.
+dt1[, above_med_sepal_width := Sepal.Length > median(Sepal.Length)]
+# In the line above, the median() collapses the column to a single value, but then 
+#   comparing it against the Sepal.Length column using `>` means the result is a vector
+#   of same length as Sepal.Length.
+dt1[, .(num_obs = length(Sepal.Length), 
+        avg_sepal_area = mean(Sepal.Length * Sepal.Width)), 
+    by=.(Species, above_med_sepal_width)]
+```
+
+With in-place assignment, similar to if there's no grouping, the results are repeated to match the length of the existing columns.
+
+```{r eval=FALSE}
+dt1 <- iris %>% as.data.table
+dt1[, avg_sepal_area := mean(Sepal.Length * Sepal.Width), by=Species]
+dt1
+```
+
+### Handy data.table functions {#data-table-functions}
+
+The data.table package also introduces many useful functions, and modifications of existing base R functions that are specifically designed for use on data tables. Some of the most useful of these include:
+
+* `melt()`. Reshapes a data table from 'wide' to 'long'.
+* `dcast()`. Reshapes a data table from 'long' to 'wide' 
+* `setkey()`. Orders a data table by the specified variables and makes subsequent 'grouped' operaitons faster. 
+* `merge()`. Joins two data tables with different variables, based on specified common variables (similar to `JOIN` in SQL).
+* `rbind()`. Short for 'row bind', joins two data tables with the same variables, by putting one underneath the other.
+* `fifelse()`. Vectorised 'if' function -- does operations to only selected elements of a vector, with selection based on a logical vector.
+
+There is plenty more great data.table functionality that hasn't been covered here. When you want to do something you haven't learnt, use the help resources list above as well as stack overflow.
+
+A feature that I commonly use is to use `lapply()` to apply a function to multiple columns simultaneously (because a data table treats itself as a type of list of columns), and use `.SD` and `.SDcols` to specify which columns to operate on.
+
+```{r eval=FALSE}
+dt1 <- iris %>% as.data.table
+dt1[, lapply(.SD, function(x) x + 10), .SDcols=c('Sepal.Length', 'Sepal.Width')]
+# The .SD object tells data.table 'do this on a subset of columns', then the .SDcols
+#   argument tells data.table which columns. If you leave out the .SDcols argument, it
+#   does it on all columns (or tries to).
+# data.table has several other shorthands like .SD that add functionality and felxibility.
+
+```
+
+
+## Combining data.table and magrittr
+
+The combination of data tables and pipes produces neat, concise and readable code. Each line modifies the data table, either within its index operators `[]`, or by calling a function on the data table. When using the index operators, the line starts with `.[`, where the `.` represents the output from the previous line.
+
+```{r eval=FALSE}
+# Consider our earlier assignment of two new columns:
+dt1 <- iris %>% as.data.table
+dt1 <- dt1[, c('sepal_area', 'petal_area') := 
+      .(Sepal.Length * Sepal.Width, Petal.Length * Petal.Width)]
+### The data.table and pipes way
+# Making more use of pipes we could do the following, which is one line longer, but 
+#   arguably much easier to read.
+dt1 <- copy(iris) %>%  # Use 'copy()' in the first line to avoid modifying iris.
+  as.data.table %>%
+  .[, sepal_area := Sepal.Length * Sepal.Width] %>%
+  .[, petal_area := Petal.Length * Petal.Width]
+# We can also put functions in the process if we want:
+dt2 <- copy(iris) %>%
+  as.data.table %>%
+  .[, sepal_area := Sepal.Length * Sepal.Width] %>%
+  .[, petal_area := Petal.Length * Petal.Width] %>%
+  # In the following line, '.' appears twice to denote the output from the previous line.
+  .[, obs_num := 1:nrow(.)] %>%
+  melt(id.vars=c('obs_num', 'Species')) %>%  # Reshape to long
+  # Say we want to cap all petal_area values at 15:
+  .[variable == 'petal_area' & value > 15, value := 15]
+# Careful - sometimes the '.' has different meanings in the same line, for example:
+dt1 <- copy(iris) %>% 
+  as.data.table %>%
+  .[, .(length_dataset = nrow(.))] 
+# The second '.' above is shorthand for 'list()'; the other two are used by %>% to refer
+#   to the output from the previous step.
+# The rule to use: whenever '.' is followed by '(', data.table is using it as shorthand
+#   for 'list()'.
+
+### 'Piping' data tables without magrittr
+# Turning back to the two-column assignment example, another way in data table is to
+#   chain operations by placing more index operators side by side:
+dt1 <- iris %>% as.data.table
+dt1 <- dt1[, sepal_area := Sepal.Length * Sepal.Width
+           ][, petal_area := Petal.Length * Petal.Width]
+# But it's arguably neater with pipes (and easier to add functions into the process)
+```
+
+## Why data.table rather than dplyr here {#packages-why-not-dplyr}
+
+The main alternative to data.table is dplyr, which is the Tidyverse package for working with data frames. The dplyr syntax is again different from base R -- but more so and in different ways compared to data.table -- so people tend to pick either data.table or dplyr and mostly stick to it. (Although it's OK to use dplyr and data.table together, and sometimes that makes sense to do.) Many just use what they were first shown. Some choose based on which syntax they find more intuitive. In my experience, detail-oriented people prefer the data.table syntax, due to its flexibility, and high-level thinkers prefer dplyr, because, for the common operations it was built for, it works very neatly.
+
+Some other advantages of each option:
+
+* **data.table**: runs faster; no package dependencies (i.e. stable); concise and flexible syntax; closer to base R, so it's good for modelling (base R is still best for math); good official help files.
+* **dplyr**: syntax closer to English (i.e. more words, fewer symbols); functions arguments and outputs have consistent formats; lots of online tutorials.
+
+Both packages are continually having new functionality added to them, and both have an abundance of useful information on Stack Overflow.
+
+The most proficient users of R for data analysis that I've encountered have tended to prefer data.table. However, there are many more online tutorials available for dplyr. That is why some emphasis on data.table is worthwhile here. 
+
+There is a detailed discussion comparing the two options, with contributions by developers of both packages, in this stack overflow post: https://stackoverflow.com/questions/21435339/data-table-vs-dplyr-can-one-do-something-well-the-other-cant-or-does-poorly. 
+
+For information on dplyr, see its webpage: https://dplyr.tidyverse.org/. The linked page mentions five key dplyr functions. The dplyr functions and their data.table equivalents:
+
+* `mutate()` is done by `:=` (see section \@ref(data-table-assignment)).
+* `select()` is done by indexing column names (closer to base R; see section \@ref(data-table-index-shortcuts)).
+* `filter()` is done by row indexing in `[]`, as in base R.
+* `summarise()` is done with the `by` argument (see section \@ref(data-table-by)).
+* `arrange()` can be done with `setkey()` (see section \@ref(data-table-functions)), or a few other options.
+
