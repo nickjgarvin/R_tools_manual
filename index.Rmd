@@ -1,5 +1,5 @@
 --- 
-title: "R Tools for Data Analysis"
+title: "R Tools for Quantitative Data Analysis"
 author: "Nick Garvin"
 date: "`r Sys.Date()`"
 output:
@@ -23,7 +23,7 @@ documentclass: book
 
 <!-- Leave some of the less essential details (e.g. array dim attribute) to the code chunks, to keep the text as short as possible. -->
 
-**This manual provides the building blocks for using R for data analysis.** When combined in the right ways, these tools can do pretty much anything you can imagine that involves data. 
+**This manual provides the building blocks for using R for data analysis.** When combined in the right ways, these tools can do pretty much anything you can imagine that involves manipulating quantitative data. 
 
 **It includes chunks of example code. You should copy them and run them in R yourself** -- there are demonstrations that you will only see if you do this. You could additionally save these examples into your own script/s, if you want to keep them accessible for future use. The examples also include many commonly-used functions that are not discussed in the text.
 
@@ -32,8 +32,8 @@ Everything before section \@ref(data-table-and-magrittr) is about tools in **bas
 Another great resource for learning R is Hadley Wickham's 'Advanced R' book (free at https://adv-r.hadley.nz/index.html). The main differences from this manual are:
 
 * This manual is shorter.
-* This manual has more emphasis on how to do data analysis and modelling, and less on other R topics related to package development and programming more generally. 
-* Advanced R assumes use of Hadley Wickham's Tidyverse set of packages. This manual does not, because for data analysis many peopl prefer Tidyverse alternatives (discussed in section \@ref(packages-why-not-dplyr)). This manual covers some Tidyverse packages -- i.e. magrittr and ggplot2 -- as well as other key non-Tidyverse packages -- in particular data.table.
+* This manual has more emphasis on working with data, and less on other R topics related to R package development and programming more generally. 
+* Advanced R assumes use of Hadley Wickham's Tidyverse set of packages. This manual does not, because for data analysis many people prefer alternatives (discussed in section \@ref(packages-why-not-dplyr)). This manual covers some Tidyverse packages -- i.e. magrittr and ggplot2 -- as well as other key non-Tidyverse packages -- in particular data.table.
 
 
 
@@ -59,9 +59,9 @@ There are two places to write R code:
 
 **TIP**: save your R scripts, not your R 'sessions' (i.e. the collection of data objects your script has created). Rather than opening a saved session, it's better to recreate it by running your saved script. Then you have the R objects you need <u>and</u> a record of how they were created <u>and</u> the ability to reproduce them.
 
-Some other commonly used R Studio functionality that are covered in section [X]:
+Some other commonly used R Studio functionality:
 
-* <u>R projects</u> are useful for grouping files that belong to the same piece of work, such as scripts that relate to each other, input files read by the script/s (e.g. datasets stored locally), and outputs. 
+* <u>R projects</u> are useful for grouping files that belong to the same piece of work, such as scripts that relate to each other, input files read by the script/s (e.g. datasets stored locally), and outputs. These are discussed in section \@ref(import-data-projects)
 * <u>R Markdown</u> is useful for presenting code/output/text to someone that will not be running the R code themselves. This document was produced in R Markdown. But <u>only use it for this purpose</u> -- it wasn't intended to be used for general coding.
 
 ## What is a line of code?
@@ -92,7 +92,7 @@ Make your code easily readable, for your later self and for others. Some tips:
 
 ## Base R and installing packages {#getting-started-packages}
 
-<b>Base R</b> refers to R without any additional packages installed, which is what you get when you first install R. This document focuses mostly on base R, which can do a vast range of things. Packages build on base R to add functionality, but rarely do anything data-analysis related that base R code cannot do (with the exception of producing reports/pdfs/etc). Rather, they're usually intended to make doing that thing easier, by reducing the amount of code required or making the operations faster. 
+<b>Base R</b> refers to R without any additional packages installed, which is what you get when you first install R. This document focuses mostly on base R, which can do a vast range of things. Packages build on base R to add functionality, but rarely do anything related to data manipulation that cannot be done in base R. Rather, they're usually intended to make doing that thing easier, by reducing the amount of code required or making the operations faster. 
 
 <b>To use a package</b>:
 

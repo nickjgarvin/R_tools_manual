@@ -1,25 +1,25 @@
 # Types of data objects {#object-types}
 
-Objects are pieces of data that are named and stored in R's environment, ready for your code to call upon. There are three main types of data objects:
+Objects are pieces of data that are named and stored in the R session (AKA environment), ready for your code to call upon. There are three main types of data objects:
 
 * **Vectors** store a single variable. They are R's most fundamental type of data object.
 * **Data frames** -- including popular subtypes 'data tables' and 'tibbles' -- store datasets, that is, collections of related variables. **Arrays** are a related object type to data frames, and will also be discussed.
 * **Lists** are a more-flexible vector type whose elements can each be any object type (e.g. each element of a list can be a different dataset).
     * *Careful*: Sometimes lists are also called vectors, with single-variable vectors distinguished as 'atomic vectors'. This document will only use 'vector' to mean single-variable vectors.
 
-<b>Indexing</b> is an essential operation that involves extracting a piece of a data object. Indexing is also used to modify objects, by assigning something to the indexed part of the object. 
+<b>Indexing</b> is an essential operation that involves extracting a piece of a data object. Indexing is also used to modify objects, by assigning something to the indexed part of the object.
 
-<b>Functions</b> are another important object type. Functions do things to data objects. Most lines of R code include at least a data object and a function. Functions are discussed in section \@ref(functions).
+<b>Functions</b> do things to data (and other) objects. Most lines of R code include at least a data object and a function. Functions are discussed in section \@ref(functions).
 
 This chapter covers the types of data objects mentioned above and how to index them, followed by a brief section on if statements and for loops.
 
 ## Vectors
 
-<b>A vector stores any number of observations of a single variable</b>. In other words, a vector is a one-dimensional collection of data in which every element is the same type of data (e.g. numbers versus text). <b>Vectors are the most fundamental type of data object in R</b>. The smallest unit of data is a one-element vector. If you type `1 + 3` into the console, R treats 1 and 3 as single-element vectors and returns a single-element vector containing 4.
+<b>A vector stores any number of observations of a single variable</b>. In other words, a vector is a one-dimensional collection of data in which every element is the same type of data (think numbers versus text). <b>Vectors are the most fundamental type of data object in R</b>. The smallest unit of data is a one-element vector. If you type `1 + 3` into the console, R treats 1 and 3 as single-element vectors and returns a single-element vector containing 4.
 
 Some preliminaries:
 
-* <u>Coercion</u>: If you try to put different types of data in the same object, R will typically coerce those data to be the same type. For example, any numbers put alongside text will get treated as text (so math won't work on them).
+* <u>Coercion</u>: If you try to put different types of data in the same vector, R will typically coerce those data to be the same type. For example, any numbers put alongside text will get treated as text (so math won't work on them).
 * <u>Missing or invalid data</u> are stored as `NA` for the missing elements. These can exist in any vector type and will typically produce another `NA` when operated on. 
     * `NaN` (not a number) is like `NA`, but represents the outcome of an impossible mathematical operation (e.g. `log(-1)`).
 * <u>Empy vectors</u>: `NULL` represents a vector that exists in the environment but contains nothing.
@@ -34,12 +34,12 @@ Some preliminaries:
 
 ### Numeric vectors
 
-Numeric vectors permit mathematical operations. Here numeric vectors also refers to vector subtypes such as integers. 
+Numeric vectors permit mathematical operations. Here, 'numeric vectors' is used to also refer to subtypes such as integer vectors. 
 
 Things to know:
 
 * `Inf` is a numeric value representing infinity -- e.g. try typing `1 / 0`.
-* <u>Scientific notation</u>: for shorthand, values can use `e` to denote how many powers of 10 the number is. For example `1.2e6` is 1.2 million and `3e-4` is 0.0003. 
+* <u>Scientific notation</u>. As shorthand, numbers can use `e` to denote how many powers of 10 the number is. For example `1.2e6` is 1.2 million and `3e-4` is 0.0003. 
    
    
 ```{r eval=FALSE}
@@ -143,13 +143,12 @@ even_numbers <- seq(0, 100, by=2)
 
 ### Date vectors
 
-IMPROVE THIS.
-
-There are several types of date vectors in R. The simplest -- but not necessarily best -- way to deal with dates is store them as character vectors, always using the format 'yyyy-mm-dd'. Some characteristics of this approach:
+There are several types of date vectors in R. For now, this section just covers the simplest approach, which in some cases will not be the best, but it always works. This involves storing dates as character vectors with the format 'yyyy-mm-dd'. Some characteristics of this approach:
 
 * <u>Simple</u> -- no package dependencies, no type-specific behaviour to understand. Just keep an eye out that R does not try to convert the vector into a factor or a non-character date format.
-* <u>Correct ordering</u>: for example, `2021-02-01 > 2021-01-31` reliably returns TRUE -- and this works correctly correctly for all dates -- because R views characters as alphabetically ordered. That is, R checks left to right along the 10 positions in each character, and as soon as there's a position where one character is greater than then other (e.g. `'b'` is greater than `'a'`; `2` is greater than `1`), it determines that to be the higher character vector element.
-* <u>Unintelligent</u>: While this will order dates correctly, it will not be able to tell you how many days/months/years difference there is between two dates. Other date types can do that.
+* <u>No times</u> -- obviously this just works with calendar days, not hours, minutes, etc.
+* <u>Correct ordering</u>: for example, `2021-02-01 > 2021-01-31` reliably returns `TRUE` -- and this works correctly for all dates -- because R treats characters as alphabetically ordered. That is, R checks left to right along the 10 positions in each character, and as soon as there's a position where one character is greater than then other (e.g. 'b' is greater than 'a'; '2' is greater than '1'), it determines that to be the higher character vector element.
+* <u>Unintelligent</u>: While this will order dates correctly, it will usually not be able to tell you how many days or months there are between two dates. Other date types can do that.
 * <u>But easy to make smarter</u>: It's easy to write functions that manipulate these dates in useful ways. See section \@ref(functions-user-defined-functions) for an uncomplicated  function that converts any of these dates to a quarter end.
 * <u>Can be slow</u>. For large datasets, it can be slow relative to other date types, for the same reason than factor vectors are more memory efficient than character vectors.
 

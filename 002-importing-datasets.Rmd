@@ -55,7 +55,7 @@ mysuper_data[1:5, 1:5]
 
 ```
 
-## Setting up an RStudio project
+## Setting up an RStudio project {#import-data-projects}
 
 RStudio projects are suitable for all coding tasks. The project creates a folder that contains the scripts and other files used for that task, such as locally stored datasets.
 

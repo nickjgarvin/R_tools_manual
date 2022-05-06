@@ -326,24 +326,22 @@ dt1 <- dt1[, sepal_area := Sepal.Length * Sepal.Width
 
 ## Why data.table rather than dplyr here {#packages-why-not-dplyr}
 
-The main alternative to data.table is dplyr, which is the Tidyverse package for working with data frames. The dplyr syntax is again different from base R -- but more so and in different ways compared to data.table -- so people tend to pick either data.table or dplyr and mostly stick to it. (Although it's OK to use dplyr and data.table together, and sometimes that makes sense to do.) Many just use what they were first shown. Some choose based on which syntax they find more intuitive. In my experience, detail-oriented people prefer the data.table syntax, due to its flexibility, and high-level thinkers prefer dplyr, because, for the common operations it was built for, it works very neatly.
+The main alternative to data.table is dplyr, which is the Tidyverse package for working with data frames. The dplyr syntax is again different from base R -- but more so and in different ways compared to data.table -- so people tend to pick either data.table or dplyr and mostly stick to it. (Although it's OK to use dplyr and data.table together, and sometimes that makes sense to do.) Many just use what they were first shown. Some choose based on which syntax they find more intuitive. In my experience, detail-oriented people prefer the data.table syntax, due to its flexibility, and high-level thinkers prefer dplyr, because it works very neatly for what it was built for.
 
 Some other advantages of each option:
 
-* **data.table**: runs faster; no package dependencies (i.e. stable); concise and flexible syntax; closer to base R, so it's good for modelling (base R is still best for math); good official help files.
+* **data.table**: runs faster; no package dependencies (i.e. stable); concise and flexible syntax; closer to base R, so it's good for modelling (base R is still best for linear algebra); good official help files.
 * **dplyr**: syntax closer to English (i.e. more words, fewer symbols); functions arguments and outputs have consistent formats; lots of online tutorials.
 
 Both packages are continually having new functionality added to them, and both have an abundance of useful information on Stack Overflow.
 
-The most proficient users of R for data analysis that I've encountered have tended to prefer data.table. However, there are many more online tutorials available for dplyr. That is why some emphasis on data.table is worthwhile here. 
-
 There is a detailed discussion comparing the two options, with contributions by developers of both packages, in this stack overflow post: https://stackoverflow.com/questions/21435339/data-table-vs-dplyr-can-one-do-something-well-the-other-cant-or-does-poorly. 
 
-For information on dplyr, see its webpage: https://dplyr.tidyverse.org/. The linked page mentions five key dplyr functions. The dplyr functions and their data.table equivalents:
+For information on dplyr, see its webpage: https://dplyr.tidyverse.org/. The linked page mentions five key dplyr functions. The dplyr functions and their data.table equivalents are:
 
 * `mutate()` is done by `:=` (see section \@ref(data-table-assignment)).
 * `select()` is done by indexing column names (closer to base R; see section \@ref(data-table-index-shortcuts)).
 * `filter()` is done by row indexing in `[]`, as in base R.
 * `summarise()` is done with the `by` argument (see section \@ref(data-table-by)).
-* `arrange()` can be done with `setkey()` (see section \@ref(data-table-functions)), or a few other options.
+* `arrange()` can be done with `setkey()`, `setorder()`, `order()`, etc.
 
