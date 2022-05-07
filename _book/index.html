@@ -31,7 +31,7 @@
   
   
 
-<link rel="next" href="object-types.html"/>
+<link rel="next" href="getting-started.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -133,13 +133,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Getting started</a>
+<li><a href="https://glowing-blancmange-f08364.netlify.app/index.html">R Tools for Quantitative Data Analysis</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="1" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>1</b> Getting started</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#where-to-write-code-scripts-and-the-console"><i class="fa fa-check"></i><b>1.1</b> Where to write code: scripts and the console</a></li>
-<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#what-is-a-line-of-code"><i class="fa fa-check"></i><b>1.2</b> What is a line of code?</a></li>
-<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#coding-style"><i class="fa fa-check"></i><b>1.3</b> Coding style</a></li>
-<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#getting-started-packages"><i class="fa fa-check"></i><b>1.4</b> Base R and installing packages</a></li>
-<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#example-code-to-play-with"><i class="fa fa-check"></i><b>1.5</b> Example code to play with</a></li>
+<li class="chapter" data-level="1.1" data-path="getting-started.html"><a href="getting-started.html#what-is-a-line-of-r-code"><i class="fa fa-check"></i><b>1.1</b> What is a line of R code?</a></li>
+<li class="chapter" data-level="1.2" data-path="getting-started.html"><a href="getting-started.html#coding-style"><i class="fa fa-check"></i><b>1.2</b> Coding style</a></li>
+<li class="chapter" data-level="1.3" data-path="getting-started.html"><a href="getting-started.html#getting-started-packages"><i class="fa fa-check"></i><b>1.3</b> Base R and installing packages</a></li>
+<li class="chapter" data-level="1.4" data-path="getting-started.html"><a href="getting-started.html#example-code-to-play-with"><i class="fa fa-check"></i><b>1.4</b> Example code to play with</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="object-types.html"><a href="object-types.html"><i class="fa fa-check"></i><b>2</b> Types of data objects</a>
 <ul>
@@ -207,6 +210,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="7" data-path="workflow.html"><a href="workflow.html"><i class="fa fa-check"></i><b>7</b> Workflow</a></li>
 <li class="chapter" data-level="8" data-path="good-habits.html"><a href="good-habits.html"><i class="fa fa-check"></i><b>8</b> Good habits</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
 </ul>
 
       </nav>
@@ -229,137 +235,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p class="author"><em>Nick Garvin</em></p>
 <p class="date"><em>2022-05-07</em></p>
 </div>
-<div id="getting-started" class="section level1 hasAnchor" number="1">
-<h1><span class="header-section-number">Chapter 1</span> Getting started<a href="index.html#getting-started" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="introduction" class="section level1 unnumbered hasAnchor">
+<h1>Introduction<a href="index.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <!-- To do: -->
 <!-- Try to design an exercise that covers all of these topics one by one and does something actually realistic, like formatting and plotting superannuation data or something* -->
 <!-- Generally this could be made more engaging by asking the reader to use the tools for something interesting in each step. -->
-<!-- Leave some of the less essential details (e.g. array dim attribute) to the code chunks, to keep the text as short as possible. -->
-<p><strong>This manual provides the building blocks for using R for data analysis.</strong> When combined in the right ways, these tools can do pretty much anything you can imagine that involves manipulating quantitative data.</p>
-<p><strong>It includes chunks of example code. You should copy them and run them in R yourself</strong> – there are demonstrations that you will only see if you do this. You could additionally save these examples into your own script/s, if you want to keep them accessible for future use. The examples also include many commonly-used functions that are not discussed in the text.</p>
-<p>Everything before section <a href="data-table-and-magrittr.html#data-table-and-magrittr">5</a> is about tools in <strong>base R</strong> (i.e. R without any extra packages installed). Base R is worth understanding well no matter what packages you end up using, because base R has more flexibility than any sets of packages. Section <a href="data-table-and-magrittr.html#data-table-and-magrittr">5</a> briefly covers two particularly useful packages – <strong>data.table</strong> and <strong>magrittr</strong>. These are used in section <a href="graphs.html#graphs">6</a> on graphs, which also briefly covers the <strong>ggplot2</strong> graphing package.</p>
-<p>Another great resource for learning R is Hadley Wickham’s ‘Advanced R’ book (free at <a href="https://adv-r.hadley.nz/index.html" class="uri">https://adv-r.hadley.nz/index.html</a>). The main differences from this manual are:</p>
+<p><strong>This manual provides the building blocks for using R for data analysis.</strong> When combined in the right ways, these tools can do pretty much anything you can imagine that involves manipulating or modelling data.</p>
+<p><strong>There are chunks of example code that you should copy and run yourself</strong>. The chunks include demonstrations that have little meaning without seeing the output. The examples also include many commonly-used functions that are not discussed in the text.</p>
+<p>Everything before section <a href="data-table-and-magrittr.html#data-table-and-magrittr">5</a> is about tools in <strong>base R</strong> (i.e. R without any extra packages installed). Base R is worth understanding well no matter what packages you end up using, because base R has more flexibility than package alternatives. Section <a href="data-table-and-magrittr.html#data-table-and-magrittr">5</a> briefly covers two particularly useful packages – <strong>data.table</strong> and <strong>magrittr</strong>. These are used in section <a href="graphs.html#graphs">6</a> on graphs, which also briefly covers the <strong>ggplot2</strong> graphing package.</p>
+<p><strong>Another great resource for learning R</strong> is Hadley Wickham’s ‘Advanced R’ book (free at <a href="https://adv-r.hadley.nz/index.html" class="uri">https://adv-r.hadley.nz/index.html</a>). The main differences from this manual are:</p>
 <ul>
-<li>This manual is shorter.</li>
-<li>This manual has more emphasis on working with data, and less on other R topics related to R package development and programming more generally.</li>
-<li>Advanced R assumes use of Hadley Wickham’s Tidyverse set of packages. This manual does not, because for data analysis many people prefer alternatives (discussed in section <a href="data-table-and-magrittr.html#packages-why-not-dplyr">5.5</a>). This manual covers some Tidyverse packages – i.e. magrittr and ggplot2 – as well as other key non-Tidyverse packages – in particular data.table.</li>
+<li>This manual has more emphasis on working with data, and less on other R topics related to package development and programming more generally.</li>
+<li>Advanced R assumes use of Hadley Wickham’s Tidyverse set of packages. This manual is relevant whether you’re using Tidyverse packages or not, because for data analysis many people prefer alternative approaches (discussed in section <a href="data-table-and-magrittr.html#packages-why-not-dplyr">5.5</a>).</li>
 </ul>
-<!-- **R is also used for software (i.e. package) development, but that is largely outside the scope of this manual.** The hardest part of useful data analysis is drawing insights about the real world from the data: applying an investigative mindset to understand 'how' and 'why' things have happened. That is what this manual aims for, and package development is largely peripheral to this. Bespoke packages can be highly useful for data analysis -- e.g. allowing data to be visualised in a new way, or making additional data accessible. But they can also be detrimental -- e.g. making erroneous data-processing outcomes difficult to spot,^[Unit tests written into packages can reduce the likelihood of this. But they can also give false confidence, particularly for the inexperienced (e.g. "100% test coverage" is often misinterpeted to mean "all potential cases are covered"). Often it is more reliable and efficient to ensure the analyst understands the code, than to write a package with sufficient test coverage so that they can use the code without looking at it.] or encouraging a model to be used without awareness of the assumptions that its validity relies on. -->
-<div id="where-to-write-code-scripts-and-the-console" class="section level2 hasAnchor" number="1.1">
-<h2><span class="header-section-number">1.1</span> Where to write code: scripts and the console<a href="index.html#where-to-write-code-scripts-and-the-console" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>There are two places to write R code:</p>
-<ol style="list-style-type: decimal">
-<li><u>The R console</u>. This is where code is run. If you write directly into the console, each time you hit <code>enter</code> it will run what you wrote. If you open R without R Studio, R will just show the console. Try it.</li>
-<li><u>Scripts</u>. An R script is basically a text file (but, if using R Studio, with a .R extension). This is where code is saved. You send whole scripts or bits of them to the console for execution.</li>
-</ol>
-<p><b>Use R studio</b>, which makes writing, running and saving scripts easy. Although R is open source, R Studio is commercial software, but the standard version is free of charge, and if it doesn’t stay that way someone will probably develop an open-source alternative. Some small parts of this document are specific to using R in R Studio.</p>
-<p><strong>To get started with R Studio</strong>:</p>
-<ol style="list-style-type: decimal">
-<li>Install and open R Studio.</li>
-<li>Click ‘File’ -&gt; ‘New file’ -&gt; ‘R Script’.</li>
-<li>Write code into the script.</li>
-<li>Run code by highlighting it and typing <code>ctrl+enter</code>, or run a line by hitting <code>ctrl+enter</code> when your cursor is on that line, or run the whole script down to your cursor by typing <code>ctrl+alt+b</code>.</li>
-<li>Save the script if you want to keep it.</li>
-</ol>
-<p><strong>TIP</strong>: save your R scripts, not your R ‘sessions’ (i.e. the collection of data objects your script has created). Rather than opening a saved session, it’s better to recreate it by running your saved script. Then you have the R objects you need <u>and</u> a record of how they were created <u>and</u> the ability to reproduce them.</p>
-<p>Some other commonly used R Studio functionality:</p>
-<ul>
-<li><u>R projects</u> are useful for grouping files that belong to the same piece of work, such as scripts that relate to each other, input files read by the script/s (e.g. datasets stored locally), and outputs. These are discussed in section <a href="obtaining-data.html#import-data-projects">3.3</a></li>
-<li><u>R Markdown</u> is useful for presenting code/output/text to someone that will not be running the R code themselves. This document was produced in R Markdown. But <u>only use it for this purpose</u> – it wasn’t intended to be used for general coding.</li>
-</ul>
-</div>
-<div id="what-is-a-line-of-code" class="section level2 hasAnchor" number="1.2">
-<h2><span class="header-section-number">1.2</span> What is a line of code?<a href="index.html#what-is-a-line-of-code" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>These are things worth knowing before you start:</p>
-<ul>
-<li><u>Comments</u>: R ignores any line that starts with <code>#</code>, regardless of what is after it. If <code>#</code> appears partway through a line, everything after the <code>#</code> is ignored.</li>
-<li><u>R is case sensitive</u>.</li>
-<li><u>R uses sequential execution</u>. R runs code one line at a time. The results of one line are produced, and ready to use, before the next line is run. Lines are separated by typing <code>enter</code>.
-<ul>
-<li><u>Splitting lines</u>: To tell the R console to treat multiple lines in the script as one line, leave the first line(s) syntactically incomplete using any unfinished operation. In the example code below, a ‘+’ operator is left syntactically incomplete to split the line. Good practice is to keep each line within 90 characters.</li>
-<li><u>Pipes</u>: The ‘pipe’ operater <code>%&gt;%</code>, from the magrittr package, slightly modifies the concept of ‘a line of R code’. This is discussed in section <a href="data-table-and-magrittr.html#data-table-and-magrittr">5</a>.<br />
-</li>
-</ul></li>
-<li><u>Assignment</u> (<code>&lt;-</code>): Most lines of R code are an assignment, to create or update a data object.
-<ul>
-<li>Assignment creates a new object. For example, <code>y &lt;- x</code> creates a new object called <code>y</code>, from <code>x</code>.</li>
-<li>The assignment operator <code>&lt;-</code> gives the RHS data object (e.g. <code>x</code>) the name (AKA symbol) on the LHS (e.g. <code>y</code>), and stores it in your session’s ‘environment’. If an object of that name already existed, it is over-written.
-<ul>
-<li>Have the ‘Environment’ pane in R Studio open when you run an assignment, and you will see the object appear when it is assigned.</li>
-</ul></li>
-<li>Assignment can also update an existing object. To do this, instead or having just an object name to the left of <code>&lt;-</code>, ‘index’ an existing object to refer to a specific component of it. Indexing is discussed more shortly.</li>
-<li>The operation on the right of <code>&lt;-</code> is done before the name is assigned. So, for example, <code>x &lt;- x + 1</code> does not cause a contradiction, like <span class="math inline">\(x=x+1\)</span> does in math.</li>
-</ul></li>
-<li><u>Object names</u>: names can be any text without spaces, but cannot start with numbers. Most people use underscores instead of spaces. Some old dogs use a dot.</li>
-<li><u>Operations</u>: an operation can be run without an assignment, which will usually just display the result of that operation in the console.</li>
-</ul>
-</div>
-<div id="coding-style" class="section level2 hasAnchor" number="1.3">
-<h2><span class="header-section-number">1.3</span> Coding style<a href="index.html#coding-style" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Make your code easily readable, for your later self and for others. Some tips:</p>
-<ul>
-<li><u>Liberally comment your code</u>. It’s also usually better to describe what you’re doing, rather than how you’re doing it. When the reader knows the ‘what’, they can usually get the ‘how’ from the code.</li>
-<li><u>Follow a style guide</u>, such as Hadley Wickham’s (<a href="http://adv-r.had.co.nz/Style.html" class="uri">http://adv-r.had.co.nz/Style.html</a>) or whatever you find and like. The important thing is that your code is readable, which this will help with.</li>
-<li><u>Spend time cleaning your code</u>, after you’ve first got it working, if the code is worth keeping. Code is clean when it achieves its purpose in close to as few steps as possible, and is neatly laid and out and commented. If your code isn’t clean, it’s reasonably likely to have mistakes that haven’t been noticed.</li>
-</ul>
-</div>
-<div id="getting-started-packages" class="section level2 hasAnchor" number="1.4">
-<h2><span class="header-section-number">1.4</span> Base R and installing packages<a href="index.html#getting-started-packages" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><b>Base R</b> refers to R without any additional packages installed, which is what you get when you first install R. This document focuses mostly on base R, which can do a vast range of things. Packages build on base R to add functionality, but rarely do anything related to data manipulation that cannot be done in base R. Rather, they’re usually intended to make doing that thing easier, by reducing the amount of code required or making the operations faster.</p>
-<p><b>To use a package</b>:</p>
-<ol style="list-style-type: decimal">
-<li><u>Install</u> it on your computer by running <code>install.packages('&lt;package name&gt;')</code> in the console, for example <code>install.packages('data.table')</code>. This only needs to be done once.</li>
-<li><u>Load</u> it each time you open a new R session, by running <code>library(&lt;package name&gt;)</code>, for example <code>library(data.table)</code>. Write it into the top of the script, for visibility. This brings its functions into your ‘namespace’ environment and makes them available to call.
-<ul>
-<li>Alternatively, you can call a function from a package that is installed but not loaded, by typing the package name with <code>::</code>. For example, <code>data.table::melt()</code> calls the <code>melt()</code> function without data.table needing to be loaded. This avoids bringing the package’s functions into the namespace environment and can help prevent function-name duplication.</li>
-</ul></li>
-</ol>
-<p><strong>Careful</strong>: Using additional packages does some bring costs, like package dependencies, potential function-name duplication, and small overheads. Don’t let that stop you. Just do this: only start relying on an additional package if it provides a noticeable benefit over what you have already. Also, if your code is running critical processes, make sure you’re managing these risks.</p>
-<p>A few widely used packages can change how the R syntax looks, so if after reading sections <a href="index.html#getting-started">1</a> and <a href="object-types.html#object-types">2</a>, you see R code that still looks foreign to you, this is probably the reason. Section <a href="data-table-and-magrittr.html#data-table-and-magrittr">5</a> covers that.</p>
-</div>
-<div id="example-code-to-play-with" class="section level2 hasAnchor" number="1.5">
-<h2><span class="header-section-number">1.5</span> Example code to play with<a href="index.html#example-code-to-play-with" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Generate some mock variables and run a simple regression on them.</span></span>
-<span id="cb1-2"><a href="index.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Set your desired sample size</span></span>
-<span id="cb1-3"><a href="index.html#cb1-3" aria-hidden="true" tabindex="-1"></a>samp_size <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
-<span id="cb1-4"><a href="index.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the regression parameters</span></span>
-<span id="cb1-5"><a href="index.html#cb1-5" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.75</span></span>
-<span id="cb1-6"><a href="index.html#cb1-6" aria-hidden="true" tabindex="-1"></a>beta <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb1-7"><a href="index.html#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an x variable vector, as a sequence from 1 to the sample size</span></span>
-<span id="cb1-8"><a href="index.html#cb1-8" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">1</span>, samp_size)</span>
-<span id="cb1-9"><a href="index.html#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Do the same thing another way (the operator &#39;:&#39; creates a sequence of integers)</span></span>
-<span id="cb1-10"><a href="index.html#cb1-10" aria-hidden="true" tabindex="-1"></a>x2 <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>samp_size</span>
-<span id="cb1-11"><a href="index.html#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Show that they&#39;re the same (an example of operation without assignment).</span></span>
-<span id="cb1-12"><a href="index.html#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(x, x2)</span>
-<span id="cb1-13"><a href="index.html#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove the unneeded one.</span></span>
-<span id="cb1-14"><a href="index.html#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(x2)</span>
-<span id="cb1-15"><a href="index.html#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate the regression residuals by randomly selecting from a normal distribution</span></span>
-<span id="cb1-16"><a href="index.html#cb1-16" aria-hidden="true" tabindex="-1"></a>e <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n=</span>samp_size)</span>
-<span id="cb1-17"><a href="index.html#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the chosen parameters</span></span>
-<span id="cb1-18"><a href="index.html#cb1-18" aria-hidden="true" tabindex="-1"></a>alpha</span>
-<span id="cb1-19"><a href="index.html#cb1-19" aria-hidden="true" tabindex="-1"></a>beta</span>
-<span id="cb1-20"><a href="index.html#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the x variables and residuals. Just look at the first few values.</span></span>
-<span id="cb1-21"><a href="index.html#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(x)  <span class="co"># alternatively the tail() function shows the last few values. </span></span>
-<span id="cb1-22"><a href="index.html#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(e)</span>
-<span id="cb1-23"><a href="index.html#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate the left-hand-side y variable from the components already specified.</span></span>
-<span id="cb1-24"><a href="index.html#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co"># The assignment is unnecessarily split over two lines, for illustration.</span></span>
-<span id="cb1-25"><a href="index.html#cb1-25" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> alpha <span class="sc">+</span> </span>
-<span id="cb1-26"><a href="index.html#cb1-26" aria-hidden="true" tabindex="-1"></a>  (beta <span class="sc">*</span> x) <span class="sc">+</span> e</span>
-<span id="cb1-27"><a href="index.html#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Regress the y variable on the x variable. lm() is the standard function for regression.</span></span>
-<span id="cb1-28"><a href="index.html#cb1-28" aria-hidden="true" tabindex="-1"></a>reg_output <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x)</span>
-<span id="cb1-29"><a href="index.html#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Report the output from regression</span></span>
-<span id="cb1-30"><a href="index.html#cb1-30" aria-hidden="true" tabindex="-1"></a>reg_output</span>
-<span id="cb1-31"><a href="index.html#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_output)</span>
-<span id="cb1-32"><a href="index.html#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-33"><a href="index.html#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="do">### Exercise for the interested:</span></span>
-<span id="cb1-34"><a href="index.html#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="co"># - Rerun the code a bunch of times, changing the sample size (e.g. 10, 100, 10 000, etc).</span></span>
-<span id="cb1-35"><a href="index.html#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="co">#   (Even with the same sample size the results will change, because rnorm gives different</span></span>
-<span id="cb1-36"><a href="index.html#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="co">#   values each time.)</span></span>
-<span id="cb1-37"><a href="index.html#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="co"># - See if you notice a pattern between the sample size, and how close your specified </span></span>
-<span id="cb1-38"><a href="index.html#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="co">#   alpha and beta parameters are to the regression coefficients. </span></span>
-<span id="cb1-39"><a href="index.html#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="co"># - This pattern is a &#39;law of large numbers&#39; at work.</span></span></code></pre></div>
 
-</div>
 </div>
             </section>
 
@@ -367,7 +256,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         </div>
       </div>
 
-<a href="object-types.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="getting-started.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -416,8 +305,7 @@ gitbook.start({
 },
 "toc": {
 "collapse": "subsection"
-},
-"toc-title": "R tools for data analysis"
+}
 });
 });
 </script>

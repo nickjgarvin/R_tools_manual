@@ -133,13 +133,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Getting started</a>
+<li><a href="https://glowing-blancmange-f08364.netlify.app/index.html">R Tools for Quantitative Data Analysis</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="1" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>1</b> Getting started</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#where-to-write-code-scripts-and-the-console"><i class="fa fa-check"></i><b>1.1</b> Where to write code: scripts and the console</a></li>
-<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#what-is-a-line-of-code"><i class="fa fa-check"></i><b>1.2</b> What is a line of code?</a></li>
-<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#coding-style"><i class="fa fa-check"></i><b>1.3</b> Coding style</a></li>
-<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#getting-started-packages"><i class="fa fa-check"></i><b>1.4</b> Base R and installing packages</a></li>
-<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#example-code-to-play-with"><i class="fa fa-check"></i><b>1.5</b> Example code to play with</a></li>
+<li class="chapter" data-level="1.1" data-path="getting-started.html"><a href="getting-started.html#what-is-a-line-of-r-code"><i class="fa fa-check"></i><b>1.1</b> What is a line of R code?</a></li>
+<li class="chapter" data-level="1.2" data-path="getting-started.html"><a href="getting-started.html#coding-style"><i class="fa fa-check"></i><b>1.2</b> Coding style</a></li>
+<li class="chapter" data-level="1.3" data-path="getting-started.html"><a href="getting-started.html#getting-started-packages"><i class="fa fa-check"></i><b>1.3</b> Base R and installing packages</a></li>
+<li class="chapter" data-level="1.4" data-path="getting-started.html"><a href="getting-started.html#example-code-to-play-with"><i class="fa fa-check"></i><b>1.4</b> Example code to play with</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="object-types.html"><a href="object-types.html"><i class="fa fa-check"></i><b>2</b> Types of data objects</a>
 <ul>
@@ -207,6 +210,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="7" data-path="workflow.html"><a href="workflow.html"><i class="fa fa-check"></i><b>7</b> Workflow</a></li>
 <li class="chapter" data-level="8" data-path="good-habits.html"><a href="good-habits.html"><i class="fa fa-check"></i><b>8</b> Good habits</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
 </ul>
 
       </nav>
@@ -231,7 +237,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><u>The function name</u>, in this case <code>runif</code>, which is short for ‘random uniform distribution’.</li>
 <li><u>The function arguments</u> written inside parenthesis after the name and separated by commas. In this case the arguments are <code>n</code>, <code>min</code> and <code>max</code>. Different functions have different arguments.</li>
 </ul>
-<p><b>To get the description of a function and its arguments</b>, type <code>?&lt;function name&gt;</code> into the console – for example, <code>?runif</code>. The help file will open in R Studio’s ‘Help’ pane. Try it.</p>
+<p><b>To get the description of a function and its arguments</b>, type <code>?&lt;function name&gt;</code> into the console – for example, <code>?runif</code>. The help file will open in RStudio’s ‘Help’ pane. Try it.</p>
 <p>Some things to know about function arguments:</p>
 <ul>
 <li><u>Argument names don’t have to be written</u> when calling the function; for example, <code>runif(n=5, min=-10, max=10)</code> does the same thing as <code>runif(5, -10, 10)</code>. If you provide the arguments without names, R will assume the arguments are in the same order as in the function definition (i.e. as written in the help file).</li>
@@ -341,7 +347,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="functions-environments" class="section level2 hasAnchor" number="4.2">
 <h2><span class="header-section-number">4.2</span> Environments<a href="functions.html#functions-environments" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The ‘environment’ is what contains the objects that are on hand to use (sometimes called the ‘frame’ for the objects). When you open an R session, you will be operating in the <strong>global environment</strong>. Open the ‘Environment’ pane in R Studio, and you will see that when you assign objects, they will appear in the global environment. These objects include data objects and functions.</p>
+<p>The ‘environment’ is what contains the objects that are on hand to use (sometimes called the ‘frame’ for the objects). When you open an R session, you will be operating in the <strong>global environment</strong>. Open the ‘Environment’ pane in RStudio, and you will see that when you assign objects, they will appear in the global environment. These objects include data objects and functions.</p>
 <p>Each time a function is run, that function temporarily creates its own <strong>local environment</strong>, which disappears once the function has completed running. All objects that were assigned in operations inside the functions disappear with it. The only object that passes back to the enclosing (e.g. global) environment is the specified return value. In other words, <u>functions clean up after themselves</u>. This is true for user-defined functions and for predefined functions.</p>
 <p><strong>Environments are hierarchical</strong>: when a function is called from the global environment, its local environment is enclosed within the global environment. Functions often also call other functions (e.g. the <code>`*`</code> function in <code>double_F</code> above). If one function calls a second function, the second function’s local environment is enclosed within the first function’s local environment. So you can have a global environment enclosing a local environment, which encloses another local environment, which encloses another, etc.</p>
 <p>What does this hierarchy mean in practical terms? It’s mainly about how objects are looked for, or ‘scoped’.</p>
@@ -360,7 +366,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><u>However</u>, it’s best practice to pass the objects as arguments, because then the function’s operations do not depend on the state of the environment in which it was called. Doing otherwise is an easy way to introduce mistakes. One exception is when the objects being accessed from higher environments are functions (e.g. user-defined functions defined in the global environment). This is standard practice and doing otherwise would get a bit infeasible.</li>
 </ul></li>
 </ul>
-<p>The <strong>namespace environment</strong> was briefly mentioned in section <a href="index.html#getting-started-packages">1.4</a>. Put simply, it contains all the base R functions and any functions loaded in with packages, and encloses the global environment.</p>
+<p>The <strong>namespace environment</strong> was briefly mentioned in section <a href="getting-started.html#getting-started-packages">1.3</a>. Put simply, it contains all the base R functions and any functions loaded in with packages, and encloses the global environment.</p>
 <!-- If you do enough coding, you'll at some point encounter this strange feature of function environments: <u>local environments are defined when the function is defined, not when it is called</u>. Give examples. NEED TO REFIND THE SPECIFIC INFO FOR THIS. Above I say: "when a function is called from the global environment". Maybe this should be: "when a function is defined in the global environment". -->
 <p>The namsepace environment sits above (i.e. encloses) the global environment, and contains all the base functions and functions that have been loaded in from packages.</p>
 <p>This document focuses on using R for analysing data, for which the software development side of things is not particularly relevant. If you delve into the development side of R, you’ll encounter a lot more intricate details about environments.</p>
@@ -546,8 +552,7 @@ gitbook.start({
 },
 "toc": {
 "collapse": "subsection"
-},
-"toc-title": "R tools for data analysis"
+}
 });
 });
 </script>

@@ -7,13 +7,11 @@ output:
     code_folding: hide
 site: bookdown::bookdown_site
 documentclass: book
-# url: your book url like https://bookdown.org/yihui/bookdown
-# cover-image: path to the social sharing image like images/cover.jpg
 ---
 
 <!-- Bookdown manual here: https://bookdown.org/yihui/bookdown/publishing.html-->
 
-# Getting started {#getting-started}
+# Introduction {-}
 
 <!-- To do: -->
 
@@ -21,140 +19,14 @@ documentclass: book
 
 <!-- Generally this could be made more engaging by asking the reader to use the tools for something interesting in each step. -->
 
-<!-- Leave some of the less essential details (e.g. array dim attribute) to the code chunks, to keep the text as short as possible. -->
 
-**This manual provides the building blocks for using R for data analysis.** When combined in the right ways, these tools can do pretty much anything you can imagine that involves manipulating quantitative data. 
+**This manual provides the building blocks for using R for data analysis.** When combined in the right ways, these tools can do pretty much anything you can imagine that involves manipulating or modelling data. 
 
-**It includes chunks of example code. You should copy them and run them in R yourself** -- there are demonstrations that you will only see if you do this. You could additionally save these examples into your own script/s, if you want to keep them accessible for future use. The examples also include many commonly-used functions that are not discussed in the text.
+**There are chunks of example code that you should copy and run yourself**. The chunks include demonstrations that have little meaning without seeing the output. The examples also include many commonly-used functions that are not discussed in the text. 
 
-Everything before section \@ref(data-table-and-magrittr) is about tools in **base R** (i.e. R without any extra packages installed). Base R is worth understanding well no matter what packages you end up using, because base R has more flexibility than any sets of packages. Section \@ref(data-table-and-magrittr) briefly covers two particularly useful packages -- **data.table** and **magrittr**. These are used in section \@ref(graphs) on graphs, which also briefly covers the **ggplot2** graphing package. 
+Everything before section \@ref(data-table-and-magrittr) is about tools in **base R** (i.e. R without any extra packages installed). Base R is worth understanding well no matter what packages you end up using, because base R has more flexibility than package alternatives. Section \@ref(data-table-and-magrittr) briefly covers two particularly useful packages -- **data.table** and **magrittr**. These are used in section \@ref(graphs) on graphs, which also briefly covers the **ggplot2** graphing package. 
 
-Another great resource for learning R is Hadley Wickham's 'Advanced R' book (free at https://adv-r.hadley.nz/index.html). The main differences from this manual are:
+**Another great resource for learning R** is Hadley Wickham's 'Advanced R' book (free at https://adv-r.hadley.nz/index.html). The main differences from this manual are:
 
-* This manual is shorter.
-* This manual has more emphasis on working with data, and less on other R topics related to R package development and programming more generally. 
-* Advanced R assumes use of Hadley Wickham's Tidyverse set of packages. This manual does not, because for data analysis many people prefer alternatives (discussed in section \@ref(packages-why-not-dplyr)). This manual covers some Tidyverse packages -- i.e. magrittr and ggplot2 -- as well as other key non-Tidyverse packages -- in particular data.table.
-
-
-
-<!-- **R is also used for software (i.e. package) development, but that is largely outside the scope of this manual.** The hardest part of useful data analysis is drawing insights about the real world from the data: applying an investigative mindset to understand 'how' and 'why' things have happened. That is what this manual aims for, and package development is largely peripheral to this. Bespoke packages can be highly useful for data analysis -- e.g. allowing data to be visualised in a new way, or making additional data accessible. But they can also be detrimental -- e.g. making erroneous data-processing outcomes difficult to spot,^[Unit tests written into packages can reduce the likelihood of this. But they can also give false confidence, particularly for the inexperienced (e.g. "100% test coverage" is often misinterpeted to mean "all potential cases are covered"). Often it is more reliable and efficient to ensure the analyst understands the code, than to write a package with sufficient test coverage so that they can use the code without looking at it.] or encouraging a model to be used without awareness of the assumptions that its validity relies on. -->
-
-
-## Where to write code: scripts and the console
-
-There are two places to write R code:
-
-1. <u>The R console</u>. This is where code is run. If you write directly into the console, each time you hit `enter` it will run what you wrote. If you open R without R Studio, R will just show the console. Try it.
-2. <u>Scripts</u>. An R script is basically a text file (but, if using R Studio, with a .R extension). This is where code is saved. You send whole scripts or bits of them to the console for execution. 
-
-<b>Use R studio</b>, which makes writing, running and saving scripts easy. Although R is open source, R Studio is commercial software, but the standard version is free of charge, and if it doesn't stay that way someone will probably develop an open-source alternative. Some small parts of this document are specific to using R in R Studio. 
-
-**To get started with R Studio**:
-
-1. Install and open R Studio. 
-2. Click 'File' -> 'New file' -> 'R Script'.
-3. Write code into the script.
-4. Run code by highlighting it and typing `ctrl+enter`, or run a line by hitting `ctrl+enter` when your cursor is on that line, or run the whole script down to your cursor by typing `ctrl+alt+b`.
-5. Save the script if you want to keep it.
-
-**TIP**: save your R scripts, not your R 'sessions' (i.e. the collection of data objects your script has created). Rather than opening a saved session, it's better to recreate it by running your saved script. Then you have the R objects you need <u>and</u> a record of how they were created <u>and</u> the ability to reproduce them.
-
-Some other commonly used R Studio functionality:
-
-* <u>R projects</u> are useful for grouping files that belong to the same piece of work, such as scripts that relate to each other, input files read by the script/s (e.g. datasets stored locally), and outputs. These are discussed in section \@ref(import-data-projects)
-* <u>R Markdown</u> is useful for presenting code/output/text to someone that will not be running the R code themselves. This document was produced in R Markdown. But <u>only use it for this purpose</u> -- it wasn't intended to be used for general coding.
-
-## What is a line of code?
-
-These are things worth knowing before you start:
-
-* <u>Comments</u>: R ignores any line that starts with `#`, regardless of what is after it. If `#` appears partway through a line, everything after the `#` is ignored.
-* <u>R is case sensitive</u>. 
-* <u>R uses sequential execution</u>. R runs code one line at a time. The results of one line are produced, and ready to use, before the next line is run. Lines are separated by typing `enter`.
-   * <u>Splitting lines</u>: To tell the R console to treat multiple lines in the script as one line, leave the first line(s) syntactically incomplete using any unfinished operation. In the example code below, a ‘+’ operator is left syntactically incomplete to split the line. Good practice is to keep each line within 90 characters.
-   * <u>Pipes</u>: The ‘pipe’ operater `%>%`, from the magrittr package, slightly modifies the concept of ‘a line of R code’. This is discussed in section \@ref(data-table-and-magrittr).   
-*	<u>Assignment</u> (`<-`): Most lines of R code are an assignment, to create or update a data object. 
-    * Assignment creates a new object. For example, `y <- x` creates a new object called `y`, from `x`.
-    * The assignment operator `<-` gives the RHS data object (e.g. `x`) the name (AKA symbol) on the LHS (e.g. `y`), and stores it in your session’s ‘environment’. If an object of that name already existed, it is over-written. 
-        * Have the 'Environment' pane in R Studio open when you run an assignment, and you will see the object appear when it is assigned.
-    * Assignment can also update an existing object. To do this, instead or having just an object name to the left of `<-`, 'index' an existing object to refer to a specific component of it. Indexing is discussed more shortly.
-    * The operation on the right of `<-` is done before the name is assigned. So, for example, `x <- x + 1` does not cause a contradiction, like $x=x+1$ does in math.
-* <u>Object names</u>: names can be any text without spaces, but cannot start with numbers. Most people use underscores instead of spaces. Some old dogs use a dot.
-*	<u>Operations</u>: an operation can be run without an assignment, which will usually just display the result of that operation in the console.
-
-## Coding style
-
-Make your code easily readable, for your later self and for others. Some tips:
-
-* <u>Liberally comment your code</u>. It's also usually better to describe what you're doing, rather than how you're doing it. When the reader knows the 'what', they can usually get the 'how' from the code.
-* <u>Follow a style guide</u>, such as Hadley Wickham's (http://adv-r.had.co.nz/Style.html) or whatever you find and like. The important thing is that your code is readable, which this will help with.
-* <u>Spend time cleaning your code</u>, after you've first got it working, if the code is worth keeping. Code is clean when it achieves its purpose in close to as few steps as possible, and is neatly laid and out and commented. If your code isn't clean, it's reasonably likely to have mistakes that haven't been noticed. 
-
-## Base R and installing packages {#getting-started-packages}
-
-<b>Base R</b> refers to R without any additional packages installed, which is what you get when you first install R. This document focuses mostly on base R, which can do a vast range of things. Packages build on base R to add functionality, but rarely do anything related to data manipulation that cannot be done in base R. Rather, they're usually intended to make doing that thing easier, by reducing the amount of code required or making the operations faster. 
-
-<b>To use a package</b>:
-
-1. <u>Install</u> it on your computer by running `install.packages('<package name>')` in the console, for example `install.packages('data.table')`. This only needs to be done once.
-2. <u>Load</u> it each time you open a new R session, by running `library(<package name>)`, for example `library(data.table)`. Write it into the top of the script, for visibility. This brings its functions into your 'namespace' environment and makes them available to call.
-    * Alternatively, you can call a function from a package that is installed but not loaded, by typing the package name with `::`. For example, `data.table::melt()` calls the `melt()` function without data.table needing to be loaded. This avoids bringing the package's functions into the namespace environment and can help prevent function-name duplication.
-
-**Careful**: Using additional packages does some bring costs, like package dependencies, potential function-name duplication, and small overheads. Don't let that stop you. Just do this: only start relying on an additional package if it provides a noticeable benefit over what you have already. Also, if your code is running critical processes, make sure you're managing these risks.
-
-A few widely used packages can change how the R syntax looks, so if after reading sections \@ref(getting-started) and \@ref(object-types), you see R code that still looks foreign to you, this is probably the reason. Section \@ref(data-table-and-magrittr) covers that.
-
-## Example code to play with
-
-
-```{r, eval=FALSE}
-### Generate some mock variables and run a simple regression on them.
-# Set your desired sample size
-samp_size <- 1000
-# Set the regression parameters
-alpha <- 0.75
-beta <- 2
-# Create an x variable vector, as a sequence from 1 to the sample size
-x <- seq(1, samp_size)
-# Do the same thing another way (the operator ':' creates a sequence of integers)
-x2 <- 1:samp_size
-# Show that they're the same (an example of operation without assignment).
-identical(x, x2)
-# Remove the unneeded one.
-rm(x2)
-# Generate the regression residuals by randomly selecting from a normal distribution
-e <- rnorm(n=samp_size)
-# Show the chosen parameters
-alpha
-beta
-# Show the x variables and residuals. Just look at the first few values.
-head(x)  # alternatively the tail() function shows the last few values. 
-head(e)
-# Generate the left-hand-side y variable from the components already specified.
-# The assignment is unnecessarily split over two lines, for illustration.
-y <- alpha + 
-  (beta * x) + e
-# Regress the y variable on the x variable. lm() is the standard function for regression.
-reg_output <- lm(y ~ x)
-# Report the output from regression
-reg_output
-summary(reg_output)
-
-### Exercise for the interested:
-# - Rerun the code a bunch of times, changing the sample size (e.g. 10, 100, 10 000, etc).
-#   (Even with the same sample size the results will change, because rnorm gives different
-#   values each time.)
-# - See if you notice a pattern between the sample size, and how close your specified 
-#   alpha and beta parameters are to the regression coefficients. 
-# - This pattern is a 'law of large numbers' at work.
-```
-
-
-
-
-```{r include=FALSE}
-# automatically create a bib database for R packages
-knitr::write_bib(c(
-  .packages(), 'bookdown', 'knitr', 'rmarkdown'
-), 'packages.bib')
-```
+* This manual has more emphasis on working with data, and less on other R topics related to package development and programming more generally. 
+* Advanced R assumes use of Hadley Wickham's Tidyverse set of packages. This manual is relevant whether you're using Tidyverse packages or not, because for data analysis many people prefer alternative approaches (discussed in section \@ref(packages-why-not-dplyr)).

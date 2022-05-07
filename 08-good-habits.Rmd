@@ -1,0 +1,10 @@
+# Good habits
+
+NOT WRITTEN YET.
+
+Will cover:
+
+* Reiteration of things mentioend
+* Goal is simple and short code
+* Speed up code by vectorising
+* Testing - custom testing and unit testing

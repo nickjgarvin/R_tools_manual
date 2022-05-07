@@ -1,6 +1,5 @@
 getting-started
-where-to-write-code-scripts-and-the-console
-what-is-a-line-of-code
+what-is-a-line-of-r-code
 coding-style
 getting-started-packages
 example-code-to-play-with
