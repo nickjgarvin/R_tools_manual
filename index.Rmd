@@ -22,11 +22,11 @@ documentclass: book
 
 **This manual provides the building blocks for using R for data analysis.** When combined in the right ways, these tools can do pretty much anything you can imagine that involves manipulating or modelling data. 
 
-**There are chunks of example code that you should copy and run yourself**. The chunks include demonstrations that have little meaning without seeing the output. The examples also include many commonly-used functions that are not discussed in the text. 
+**There are chunks of example code that you should copy and run yourself**. The chunks include demonstrations that have little meaning without seeing the output they create. The examples also include many commonly-used functions that are not discussed in the text. 
 
 Everything before section \@ref(data-table-and-magrittr) is about tools in **base R** (i.e. R without any extra packages installed). Base R is worth understanding well no matter what packages you end up using, because base R has more flexibility than package alternatives. Section \@ref(data-table-and-magrittr) briefly covers two particularly useful packages -- **data.table** and **magrittr**. These are used in section \@ref(graphs) on graphs, which also briefly covers the **ggplot2** graphing package. 
 
 **Another great resource for learning R** is Hadley Wickham's 'Advanced R' book (free at https://adv-r.hadley.nz/index.html). The main differences from this manual are:
 
 * This manual has more emphasis on working with data, and less on other R topics related to package development and programming more generally. 
-* Advanced R assumes use of Hadley Wickham's Tidyverse set of packages. This manual is relevant whether you're using Tidyverse packages or not, because for data analysis many people prefer alternative approaches (discussed in section \@ref(packages-why-not-dplyr)).
+* Advanced R assumes use of Hadley Wickham's Tidyverse set of packages. This manual is relevant whether you're using Tidyverse packages or not. For data analysis many people prefer alternatives to Tidyverse packages (discussed in section \@ref(packages-why-not-dplyr)).

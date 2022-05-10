@@ -10,7 +10,7 @@
 
 **To get started with RStudio**:
 
-1. Install and open RStudio. 
+1. Download and install R and RStudio (for windows, from here https://cran.rstudio.com/ and here https://www.rstudio.com/products/rstudio/download/#download), and open RStudio.
 2. Click "File", then "New file", then "R Script".
 3. Write code into the script.
 4. Run code by highlighting it and typing `ctrl+enter`, or run a line by hitting `ctrl+enter` when your cursor is on that line, or run the whole script down to your cursor by typing `ctrl+alt+b`.
@@ -18,39 +18,41 @@
 
 **TIP: save your R scripts, not your R 'sessions'** (i.e. the collection of data objects your script has created). Rather than opening a saved session, it's better to recreate it by running your saved script. Then you have the R objects you need <u>and</u> a record of how they were created <u>and</u> the ability to reproduce them.
 
-**TIP: regularly run your whole script, to check everything still works.** But before each re-run, clear your session to make sure it's starting fresh. To clear your session:
+**TIP: regularly run your whole script, to check everything still works.** Before each re-run, clear your session to make sure it's starting fresh. You can clear your session by typing `ctr + shift + F10`, but RStudio first needs to have some settings adjusted. This is common practice and needs to be done due to [legacy issues](https://community.rstudio.com/t/defaults-of-saving-and-restoring-workspace/939). 
 
-1. Check the R settings allow this. Click "Tools, then "Global Options", and then in "R General" and "Basic", under "Workspace", make sure "Restore .RData into workspace at startup" is unticked, and "Save workspace to .RData on exit:" is set to "Never", then click "Apply". This is common practice and needs to be done due to [legacy issues](https://community.rstudio.com/t/defaults-of-saving-and-restoring-workspace/939). 
-2. Clear your session by typing `ctr + shift + F10`.
+1. Click "Tools, then "Global Options".
+2. In "R General" and "Basic", under "Workspace", make sure "Restore .RData into workspace at startup" is unticked, and "Save workspace to .RData on exit:" is set to "Never".
+3. Click "Apply". 
 
 
 **Other commonly used RStudio functionality**:
 
 * <u>RStudio projects</u> are useful for grouping files that belong to the same piece of work, such as scripts that relate to each other, input files read by the script/s (e.g. datasets stored locally), and outputs. These are discussed in section \@ref(import-data-projects)
-* <u>R Markdown</u> is useful for presenting code/output/text to someone that will be mroe interested in reading the content than running the code themselves. This document was produced in R Markdown. But <u>only use it for these purposes</u> -- it wasn't intended to be used for general coding, which standard scripts are better for.
+* <u>R Markdown</u> is great for presenting code/output/text to someone that will be more interested in reading the content than running the code themselves. For example, this document was produced in R Markdown. But <u>only use it for these purposes</u> -- it wasn't intended to be used for general coding, which standard scripts are better for.
 
-## What is a line of R code?
+## What is a line of R code? {#getting-started-what-is}
 
 These are things worth knowing before you start:
 
-* <u>Comments</u>: R ignores any line that starts with `#`, regardless of what is after it. If `#` appears partway through a line, everything after the `#` is ignored.
-* <u>R is case sensitive</u>. 
-* <u>R uses sequential execution</u>. R runs code one line at a time. The results of one line are produced, and ready to use, before the next line is run. Lines are separated by typing `enter`.
-   * <u>Splitting lines</u>: To tell the R console to treat multiple lines in the script as one line, leave the first line(s) syntactically incomplete using any unfinished operation. In the example code below, a ‘+’ operator is left syntactically incomplete to split the line. Good practice is to keep each line within 90 characters.
+* **Comments**: R ignores any line that starts with `#`, regardless of what is after it. If `#` appears partway through a line, everything after the `#` is ignored.
+* **R is case sensitive**. 
+* **R uses sequential execution**. R runs code one line at a time. The results of one line are produced, and ready to use, before the next line is run. Lines are separated by typing `enter`.
+   * <u>Splitting lines</u>: R reads multiple lines as one if the first line(s) have an unfinished operation, such as `(` without `)`, or `+` with nothing afterward.
    * <u>Pipes</u>: The ‘pipe’ operater `%>%`, from the magrittr package, slightly modifies the concept of ‘a line of R code’. This is discussed in section \@ref(data-table-and-magrittr).   
-*	<u>Assignment</u> (`<-`): Most lines of R code are an assignment, to create or update a data object. 
-    * Assignment creates a new object. For example, `y <- x` creates a new object called `y`, from `x`.
-    * The assignment operator `<-` gives the RHS data object (e.g. `x`) the name (AKA symbol) on the LHS (e.g. `y`), and stores it in your session’s ‘environment’. If an object of that name already existed, it is over-written. 
+*	**Assignment** (`<-`): Most lines of R code are an assignment, to create or modify a data object. 
+    * Assignment can create a new object. For example, `y <- 3` creates a new object called `y`, containing `3`.
+    * The assignment operator `<-` gives the RHS data object (e.g. `3`) the name (AKA symbol) on the LHS (e.g. `y`), and stores it in your session’s ‘environment’. If an object of that name already existed, it is over-written. 
         * Have the 'Environment' pane in RStudio open when you run an assignment, and you will see the object appear when it is assigned.
-    * Assignment can also update an existing object. To do this, instead or having just an object name to the left of `<-`, 'index' an existing object to refer to a specific component of it. Indexing is discussed more shortly.
+    * Assignment can also modify an existing object. To do this, instead or having just an object name to the left of `<-`, 'index' an existing object to refer to a specific component of it. Indexing is discussed more shortly.
     * The operation on the right of `<-` is done before the name is assigned. So, for example, `x <- x + 1` does not cause a contradiction; it uses the pre-existing `x` on the right then creates the new `x` on the left.
-* <u>Object names</u>: names can be any text without spaces, but cannot start with numbers. Most people use underscores instead of spaces. Some old dogs use a dot.
-*	<u>Operations</u>: an operation can be run without an assignment, which will usually just display the result of that operation in the console.
+* **Object names**: names can be any text without spaces, but cannot start with numbers. Most people use underscores instead of spaces. Some old dogs use a dot.
+*	**Operations**: an operation can be run without an assignment, which will usually just display the result of that operation in the console.
 
 ## Coding style
 
 Make your code easily readable, for your later self and for others. Some tips:
 
+* <u>Keep each line of your script within 90 characters</u>. Nobody likes having to scroll left and right to look at code. Achieve this by splitting your lines as mentioned in section \@ref(getting-started-what-is). Some use 80 characters.
 * <u>Liberally comment your code</u>. It's also usually better to describe what you're doing, rather than how you're doing it. When the reader knows the 'what', they can usually get the 'how' from the code.
 * <u>Follow a style guide</u>, such as Hadley Wickham's (http://adv-r.had.co.nz/Style.html) or whatever you find and like. The important thing is that your code is readable, which this will help with.
 * <u>Spend time cleaning your code</u>, after you've first got it working, if the code is worth keeping. Code is clean when it achieves its purpose in close to as few steps as possible, and is neatly laid and out and commented. If your code isn't clean, it's reasonably likely to have mistakes that haven't been noticed. 

@@ -1,17 +1,12 @@
 # Types of data objects {#object-types}
 
-Objects are pieces of data that are named and stored in the R session (AKA environment), ready for your code to call upon. There are three main types of data objects:
-
-* **Vectors** store a single variable. They are R's most fundamental type of data object.
-* **Data frames** -- including popular subtypes 'data tables' and 'tibbles' -- store datasets, that is, collections of related variables. **Arrays** are a related object type to data frames, and will also be discussed.
-* **Lists** are a more-flexible vector type whose elements can each be any object type (e.g. each element of a list can be a different dataset).
-    * *Careful*: Sometimes lists are also called vectors, with single-variable vectors distinguished as 'atomic vectors'. This document will only use 'vector' to mean single-variable vectors.
+Objects are pieces of data that are named and stored in the R session (AKA environment), ready for your code to call upon. 
 
 <b>Indexing</b> is an essential operation that involves extracting a piece of a data object. Indexing is also used to modify objects, by assigning something to the indexed part of the object.
 
 <b>Functions</b> do things to data (and other) objects. Most lines of R code include at least a data object and a function. Functions are discussed in section \@ref(functions).
 
-This chapter covers the types of data objects mentioned above and how to index them, followed by a brief section on if statements and for loops.
+This chapter covers the types of data objects mentioned above and how to index them, followed by a brief section on if statements and for loops. It finishes with a recap of data types and indexing.
 
 ## Vectors
 
@@ -244,17 +239,15 @@ The other two main indexing operators are `[[]]` and `$`. We'll come back to the
 ## Arrays
 
 
-An array is a multi-dimensional vector. For example, an array with two dimensions is a matrix, similar to the concept in mathematics. Data frames tend to be more useful than arrays, but arrays are worth a quick look, because data-frame indexing builds from array indexing. Arrays are also useful for mathematical operations. For simplicity let's just look at two dimensional arrays (i.e. matrixes).
+**An array is essentially a multi-dimensional vector**. For example, an array with two dimensions is a matrix, similar to the concept in mathematics. Data frames tend to be more useful than arrays, but arrays are worth a quick look, because data-frame indexing builds from array indexing. Arrays are also useful for mathematical operations. For simplicity let's just look at two dimensional arrays (i.e. matrixes).
 
 Some things worth knowing about arrays:
 
 * <u>Single data type</u>. Like vectors, arrays can only contain a single data type, either numeric, character or logical.
 * <u>Arrays are indexed with a vector for each dimension, separated by commas</u>. For example, in `matrix1[vec1, vec2]`, `vec1` specifies the rows to extract and `vec2` the columns.
    * To extract some rows and all columns, or vice versa, leave one of the dimension indexes blank, e.g. `[vec1, ]` or `[, vec2]`
-* Array elements cannot be individually named, but arrays can have column names, or row names, or both.
-* <u>Dimension attribute</u>. Arrays have an attached dimension attribute, which is a vector of integers specifying how many dimensions the array has (the length of the integer vector), and how many rows/columns/etc are in each dimension (the integers in the vector).
-   * You only see the dimension attribute it you specifically call it up.
-   * It would be reasonable to expect that vectors have a single-element dimension attribute, being an integer stating the length of the vector, but they don't. Vectors have no dimension attribute.
+* <u>Names</u>. Arrays can have column names, or row names, or both.
+* <u>Dimension attribute</u>. Arrays have a dimension attribute, which is an integer vector where each element specifies the length of the dimension. See the example code below.
 
 
 ```{r eval=FALSE}
@@ -293,7 +286,7 @@ Titanic['Crew', 'Female', 'Adult', 'Yes']  # Return zero dimension object (i.e. 
 
 ## Data frames
 
-<b>A data frame stores a dataset.</b> It's likely to be the object type you use most. You may have seen the data object types **data tables** (from the data.table package) or **tibbles** (from the dplyr pckage), which are both types of data frames. They have some improved characteristics and added functionality. The following information is about base R data frames, but also applies to data tables and tibbles.
+<b>A data frame stores a dataset.</b> It's likely to be the object type you use most. The following information is about base R data frames, but also applies to data tables and tibbles.
 
 Some characteristics of data frames:
 
@@ -301,7 +294,7 @@ Some characteristics of data frames:
 * <u>Columns can be different data types</u> (unlike arrays).
 * The <u>columns usually have names</u> (e.g. the names of the variables in the dataset).
 * Data frames can be <u>indexed like arrays</u>. When using square brackets `[, ]`, there is space for two arguments, which must be either integer or logical vectors specifying the elements to extract, or a character vector containing the names of the columns (or rows) to extract.
-* Data frame columns can also be <u>indexed with the dollar symbol</u> `$`. 
+* Individual columns can also be <u>indexed with the dollar symbol</u> `$`. For example, `df$col` returns the column named 'col' from the data frame named 'df'.
 * Data frames (in base R) can have row names but it's typically considered best practice to not use them.
 
 ```{r eval=FALSE}
@@ -469,6 +462,25 @@ identical(x_cumul1, x_cumul2)
 
 <!-- In the above, could demonstrate the speed differences, could also give an example of when a loop actually is useful. -->
 
+
+## Object type and indexing recap
+
+Here's a quick recap of the main data object types discussed in this section, and how to index them:
+
+* **Vectors** store a single variable, and are R's most fundamental type of data object.
+    * <u>Types</u>. Vector types include numeric, character, logical and factor (i.e. categorical variables). 
+    * <u>Indexing</u>. To index a vector `vec1`, type `vec1[vec2]` where `vec2` is an integer, logical or character vector. Indexing with characters only works on named vectors.
+* **Data frames** -- including popular extensions 'data tables' and 'tibbles' -- store datasets, that is, collections of related variables that can be different types.
+    * <u>Names</u>. Can have column names and/or row names. Using row names is generally discouraged.
+    * <u>Indexing</u>. Indexed with `[, ]`, similar to vectors, or with `$` to index an individual column.
+        * `df[vec1, vec2]` indexes the `vec1` rows and the `vec2` columns. `df[vec1, ]` indexes all columns and `vec1` rows, and `df[, vec2]` the reverse.
+        * `df$col` extracts the column named `col1`, as a vector.
+    * <u>Two-dimensional arrays</u> are like data frames but all elements must be the same type. Arrays can also have more dimensions.
+* **Lists** are a more-flexible vector type whose elements can each be any object type (e.g. each element of a list can be a different dataset). Lists are indexed with `[[]]`, `[]` or `$`.
+    * If `vec1` is a single-element vector, `list1[[vec1]]` extracts the element `vec1` refers to, as its own object.
+    * `list1[vec1]` returns a list containing the elements of `list1` referred to by `vec1`.
+    * `list1$element1` returns the element of `list1` named `element1`, as its own object.
+    * Sometimes lists are also called vectors, with single-variable vectors distinguished as 'atomic vectors'. This document will only use 'vector' to mean single-variable vectors.
 
 
 

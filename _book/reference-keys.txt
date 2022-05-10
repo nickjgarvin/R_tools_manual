@@ -1,5 +1,5 @@
 getting-started
-what-is-a-line-of-r-code
+getting-started-what-is
 coding-style
 getting-started-packages
 example-code-to-play-with
@@ -19,6 +19,7 @@ lists
 if-statements-and-for-loops
 if-statements
 object-types-loops
+object-type-and-indexing-recap
 obtaining-data
 common-functions-for-importing-data
 where-to-save-data

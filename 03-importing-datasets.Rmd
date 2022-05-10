@@ -23,7 +23,7 @@ There are three options for specifying where to save data:
 
 1. **Bad**: Use `setwd()` to set a working directory for your R session. R will then treat addresses as subfolders within that directory, so the full address does not need to be written.
     * This is generally discouraged because it gives your script an external dependency that reduces the flexibility of your work. For example, others will probably not be able to run your code on their machine.
-2. **Good**: Use an <u>RStudio project</u>, which bundles related script/s and files in a self-contained folder that can be moved and run anywhere. R treats the project folder as the working directory regardless of where the project folder is put. R projects are an RStudio feature and are discussed further in Section [X].
+2. **Good**: Use an <u>RStudio project</u>, which bundles related script/s and files in a self-contained folder that can be moved and run anywhere. R treats the project folder as the working directory regardless of where the project folder is put. R projects are an RStudio feature and are discussed further in section \@ref(import-data-projects).
 3. **Sometimes necessary**: write the full filepath of the location. This is required if you need to write to a specific location on your machine/network.
 
 
