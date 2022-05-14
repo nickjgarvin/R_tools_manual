@@ -1,0 +1,27 @@
+
+# Coming soon
+
+## Workflow
+
+Will cover:
+
+* `source()` and other related functions.
+* Size of user-defined functions
+* R Markdown
+* Git
+* User-written packages
+* Example of my workflow
+
+## Good habits
+
+Will cover:
+
+* Reiteration of things mentioned
+* Goal is simple and short code
+* Speed up code by vectorising
+* Modelling principles -- parsimony, use of assumptions, etc.
+* Testing - custom testing and unit testing
+
+## Better examples
+
+Examples using real data that use the code features discussed across all chapters.

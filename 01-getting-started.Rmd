@@ -1,4 +1,5 @@
 
+
 # Getting started {#getting-started}
 
 **There are two places to write R code**:
@@ -37,8 +38,8 @@ These are things worth knowing before you start:
 * **Comments**: R ignores any line that starts with `#`, regardless of what is after it. If `#` appears partway through a line, everything after the `#` is ignored.
 * **R is case sensitive**. 
 * **R uses sequential execution**. R runs code one line at a time. The results of one line are produced, and ready to use, before the next line is run. Lines are separated by typing `enter`.
-   * <u>Splitting lines</u>: R reads multiple lines as one if the first line(s) have an unfinished operation, such as `(` without `)`, or `+` with nothing afterward.
-   * <u>Pipes</u>: The ‘pipe’ operater `%>%`, from the magrittr package, slightly modifies the concept of ‘a line of R code’. This is discussed in section \@ref(data-table-and-magrittr).   
+   * <u>Splitting lines</u>: R reads multiple lines as one if the first line(s) have an unfinished operation, such as `(` without `)`, or `+` with nothing afterward until the next line.
+   * <u>Pipes</u>: The ‘pipe’ operator `%>%`, from the magrittr package, slightly modifies the concept of ‘a line of R code’. This is discussed in section \@ref(data-table-and-magrittr).   
 *	**Assignment** (`<-`): Most lines of R code are an assignment, to create or modify a data object. 
     * Assignment can create a new object. For example, `y <- 3` creates a new object called `y`, containing `3`.
     * The assignment operator `<-` gives the RHS data object (e.g. `3`) the name (AKA symbol) on the LHS (e.g. `y`), and stores it in your session’s ‘environment’. If an object of that name already existed, it is over-written. 
@@ -74,7 +75,7 @@ A few widely used packages can change how the R syntax looks, so if after readin
 ## Example code to play with
 
 
-```{r, eval=FALSE}
+```{r eval=FALSE}
 ### Generate some mock variables and run a simple regression on them.
 # Set your desired sample size
 samp_size <- 1000
@@ -116,12 +117,3 @@ summary(reg_output)
 # - This pattern is a 'law of large numbers' at work.
 ```
 
-
-
-
-```{r include=FALSE}
-# automatically create a bib database for R packages
-knitr::write_bib(c(
-  .packages(), 'bookdown', 'knitr', 'rmarkdown'
-), 'packages.bib')
-```

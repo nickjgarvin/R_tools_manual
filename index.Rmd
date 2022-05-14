@@ -2,12 +2,13 @@
 title: "R Tools for Quantitative Data Analysis"
 author: "Nick Garvin"
 date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
 output:
   html_document:
     code_folding: hide
-site: bookdown::bookdown_site
-documentclass: book
 ---
+
 
 <!-- Bookdown manual here: https://bookdown.org/yihui/bookdown/publishing.html-->
 
@@ -26,7 +27,8 @@ documentclass: book
 
 Everything before section \@ref(data-table-and-magrittr) is about tools in **base R** (i.e. R without any extra packages installed). Base R is worth understanding well no matter what packages you end up using, because base R has more flexibility than package alternatives. Section \@ref(data-table-and-magrittr) briefly covers two particularly useful packages -- **data.table** and **magrittr**. These are used in section \@ref(graphs) on graphs, which also briefly covers the **ggplot2** graphing package. 
 
-**Another great resource for learning R** is Hadley Wickham's 'Advanced R' book (free at https://adv-r.hadley.nz/index.html). The main differences from this manual are:
+**Another great resource for learning R** is Hadley Wickham's 'Advanced R' book (free at https://adv-r.hadley.nz/index.html), and various other Tidyverse resources. The main differences from this manual are:
 
-* This manual has more emphasis on working with data, and less on other R topics related to package development and programming more generally. 
-* Advanced R assumes use of Hadley Wickham's Tidyverse set of packages. This manual is relevant whether you're using Tidyverse packages or not. For data analysis many people prefer alternatives to Tidyverse packages (discussed in section \@ref(packages-why-not-dplyr)).
+* This manual has more emphasis on working with quantitative data, and less on other R topics related to package development and programming more generally. 
+* Advanced R assumes use of Hadley Wickham's Tidyverse set of packages. Many people prefer other approaches (discussed in section \@ref(packages-why-not-dplyr)). This manual is relevant whether you're using Tidyverse packages or not.
+

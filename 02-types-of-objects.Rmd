@@ -14,7 +14,7 @@ This chapter covers the types of data objects mentioned above and how to index t
 
 Some preliminaries:
 
-* <u>Coercion</u>: If you try to put different types of data in the same vector, R will typically coerce those data to be the same type. For example, any numbers put alongside text will get treated as text (so math won't work on them).
+* <u>Coercion</u>: R doesn't permit different data types in the same vector. If, for example, you try to combine numbers and text, R will coerce the numbers to text (so math won't work on them).
 * <u>Missing or invalid data</u> are stored as `NA` for the missing elements. These can exist in any vector type and will typically produce another `NA` when operated on. 
     * `NaN` (not a number) is like `NA`, but represents the outcome of an impossible mathematical operation (e.g. `log(-1)`).
 * <u>Empy vectors</u>: `NULL` represents a vector that exists in the environment but contains nothing.
@@ -24,8 +24,8 @@ Some preliminaries:
 * Numeric. Contain numbers.
 * Character (AKA strings). Contain words or other text.
 * Factor. Contain categorical variables.
-* Logical (AKA Boolean). Contain special element types `TRUE` and `FALSE`.
-* Dates.
+* Logical (AKA Boolean). Binary variables containing only special element types `TRUE` and `FALSE` (and `NA`).
+* Dates. 
 
 ### Numeric vectors
 
@@ -93,6 +93,7 @@ str(coerced_vec)  # The numbers have been coerced into characters
 ```
 
 ### Factor vectors
+
 Factors are a compressed (i.e. more efficient) version of characters, for when elements of a character vector are repeated. Think of a categorical variable such as a rating with levels ‘high’, medium’ or ‘low’. Behind the scenes, R stores a mapping of the factor levels into integers, and then stores the full factor vector as a vector of integers.
 
 <u>Warning</u>: Do not convert factors into numerics. It will give you these ‘keyed’ integers but discard the key. It is safe, however, to convert factors to characters, which will produce the factor levels as a character vector.
@@ -110,14 +111,15 @@ as.character(fac_vec)
 
 A logical vector is a binary variable that contains only the values `TRUE` and `FALSE` (not in inverted commas), which can be shorted to `T` and `F`. Logical vectors are very useful for indexing. They are also used in `if` statements. 
 
-Some common operators for producing logical vectors are:
+Some common operators for producing logical vectors from other vectors are:
 
-* `!` means 'not' -- when in front of a logical vector, it flips `TRUE` to `FALSE` and vice versa.
-* `==` returns `TRUE` if the elements are the same and `FALSE` if not. `!=` means 'not equal to', which flips it.
-* `<` (less than), `<=` (less than or equal to), `>` and `>=` produce `TRUE` and `FALSE` as you'd expect, on numeric variables. They treat character vectors as ordered alphabetially (e.g. `'a' > 'b'` gives `FALSE` and `'a' < 'b'` gives `TRUE`). Do not use them on factors -- you can probably guess the reason.
-* `%in%`, used like `vec1 %in% vec2`, returns `TRUE` for elements of `vec1` that are present in `vec2` and FALSE for elements not in `vec2`.
-* `&` (and) and `|` (or) return a single vector stating whether both were true or either were true.
-* `which()` is a function that converts a logical vector into an integer vector stating the positions of `TRUE` elements.
+* `!` in front of a logical vector means 'not' -- it flips `TRUE` to `FALSE` and vice versa.
+* `==` between two vectors means 'equals', and works element by element (see section \@ref(object-types-vector-wise)).
+* `<` (less than), `<=` (less than or equal to), `>` and `>=` work similarly to `==`.
+    * Character vectors are treated as alphabetically ordered. Don't use these operators on factors.
+* `%in%`, used like `vec1 %in% vec2`, returns `TRUE` for elements of `vec1` that are present in `vec2` and `FALSE` for elements not in `vec2`.
+* `&` (and) and `|` (or) work between two logical vectors.
+* `which()` converts a logical vector into an integer vector stating the positions of `TRUE` elements.
     
 ```{r eval=FALSE}
 ### Logical vectors 
@@ -133,6 +135,10 @@ identical(log_vec1, log_vec3)
 identical(log_vec1, !c(F, F, T, T, F, T, F))  # The operator ! flips TRUE and FALSE.
 even_numbers <- seq(0, 100, by=2)
 (1:5) %in% even_numbers  # Example of %in%. Result is always same length as LHS vector.
+log_vec4 <- c(TRUE, FALSE)
+log_vec5 <- c(FALSE, TRUE)
+log_vec4 | log_vec5
+log_vec4 & log_vec5
 
 ```
 
@@ -150,19 +156,24 @@ There are several types of date vectors in R. For now, this section just covers 
 
 <!-- This page looks like a good info source: https://shanghai.hosting.nyu.edu/data/r/dates-and-times.html -->
 
+## Vector operations and indexing
 
+This section discusses features of working with vectors that apply to all vector types.
 
-### Vector-wise operations and recycling
+### Vector-wise operations and recycling {#object-types-vector-wise}
 
 <b>Operations on vectors run element by element</b>. To understand what this means, run the code chunk below.
+
 ```{r eval=FALSE}
 seq(1, 5, by=1)
 seq(1, 5, by=1) * seq(1, 5, by=1)
-# The result from an operation on two vectors, e.g. y1 <- x1 * x2, is vector where:
-#   - The first element of y1 is the product of the first elements of x1 and x2,
-#   - The second element of y1 is the product of the second elements of x1 and x2,
-#   - etc.
 ```
+
+The result of the second line above is a vector where:
+1. The first element is the product of the first elements of x1 and x2,
+2. The second element is the product of the second elements of x1 and x2,
+3. Etc.
+
 <b>Vector-wise operations still work if the two vectors have different lengths.</b> There are two ways this can happen:
 
 * <b>Good</b>: one of the vectors is length one, for example the `2` in `seq(1, 6, by=1) / 2`. This is handy and is used a lot.
@@ -193,12 +204,12 @@ str(num_vec_named2)
 
 ### How to index vectors
 
-Indexing is for extracting a subset of an object. Vectors are indexed using `[]`. For example, `num_vec[2]` returns just the second element of `num_vec`, and `num_vec[c(2, 4)]` returns the second and fourth elements. (The first position of a vector is 1, not 0 as in some other languages.)
+Indexing is for extracting a subset of an object. Vectors are indexed with another 'indexing vector' inside `[]`. For example, `num_vec[2]` returns just the second element of `num_vec`, and `num_vec[c(2, 4)]` returns the second and fourth elements. (The first position of a vector is 1, not 0 as in some other languages.)
 
 Inside `[]` can be one of:
 
 * <u>An integer vector</u>, specifying the positions of the elements to extract.
-* <u>A logical vector</u>, where the `TRUE`s in the logical vector specify which elements to extract. 
+* <u>A logical vector</u>, where `TRUE` in the logical vector specifies the elements to extract. 
     * <u>A powerful tool</u>: To extract elements based on a condition, create and index with a logical vector in a single step. Examples in the code below.
     * <u>Length of the indexing vector</u>. The logical vector in the index operators should be the same length as the vector being indexed. If it isn't, and it still works (i.e. no error), the logical vector has been 'recycled' to the length of the indexed vector.
 * <u>A character vector of names</u>, which extracts the elements with those names.
@@ -239,13 +250,15 @@ The other two main indexing operators are `[[]]` and `$`. We'll come back to the
 ## Arrays
 
 
-**An array is essentially a multi-dimensional vector**. For example, an array with two dimensions is a matrix, similar to the concept in mathematics. Data frames tend to be more useful than arrays, but arrays are worth a quick look, because data-frame indexing builds from array indexing. Arrays are also useful for mathematical operations. For simplicity let's just look at two dimensional arrays (i.e. matrixes).
+**An array is a multi-dimensional extension of a vector**. A two-dimensional array is called a matrix. Arrays can also have more dimensions, although this does get used much. Data frames tend to be more useful than arrays, because in an array all columns must be the same data type, but arrays are worth a quick look, because data-frame indexing builds from array indexing. Arrays are also useful for mathematical operations. Let's focus on two dimensional arrays (i.e. matrices).
 
 Some things worth knowing about arrays:
 
 * <u>Single data type</u>. Like vectors, arrays can only contain a single data type, either numeric, character or logical.
 * <u>Arrays are indexed with a vector for each dimension, separated by commas</u>. For example, in `matrix1[vec1, vec2]`, `vec1` specifies the rows to extract and `vec2` the columns.
-   * To extract some rows and all columns, or vice versa, leave one of the dimension indexes blank, e.g. `[vec1, ]` or `[, vec2]`
+   * To extract some rows and all columns, or vice versa, leave one of the dimension indexes blank, e.g. `[vec1, ]` or `[, vec2]`.
+   * The indexing vectors (e.g. `vec1`, `vec2`) can be integer, logical or character vectors, like when indexing a vector.
+   * If the array has three dimensions, it is indexed with `array1[vec1, vec2, vec3]`, and likewise for four or more dimensions.
 * <u>Names</u>. Arrays can have column names, or row names, or both.
 * <u>Dimension attribute</u>. Arrays have a dimension attribute, which is an integer vector where each element specifies the length of the dimension. See the example code below.
 
@@ -293,7 +306,7 @@ Some characteristics of data frames:
 * A data frame is <u>a collection of same-length vectors</u>, laid out as columns.
 * <u>Columns can be different data types</u> (unlike arrays).
 * The <u>columns usually have names</u> (e.g. the names of the variables in the dataset).
-* Data frames can be <u>indexed like arrays</u>. When using square brackets `[, ]`, there is space for two arguments, which must be either integer or logical vectors specifying the elements to extract, or a character vector containing the names of the columns (or rows) to extract.
+* Data frames can be <u>indexed like arrays</u>, using `[, ]`. See the discussion of arrays and vectors above.
 * Individual columns can also be <u>indexed with the dollar symbol</u> `$`. For example, `df$col` returns the column named 'col' from the data frame named 'df'.
 * Data frames (in base R) can have row names but it's typically considered best practice to not use them.
 
@@ -331,9 +344,11 @@ Some characteristics of lists:
 
 * List elements can have names.
 * Lists can be indexed with a single integer/logical/character vector inside`[ ]`, just like how vectors are indexed.
-* If the elements are named, they can also be indexed with `$`.
+* If the elements are named, they can also be indexed with `$`, like the column of a data frame.
 * A single element of a list can also be indexed with `[[ ]]`. 
     * This is slightly different to indexing a single element with `[]`. Double brackets return the element as its own object type; single brackets return a one-element list with the object inside it.
+* Sometimes lists are also called vectors, with single-variable vectors distinguished as 'atomic vectors'. This document only uses 'vector' to mean a single-variable vector.
+
 
 \emph{Careful}: indexing with `$` uses partial matching, which can cause mistakes if you don't keep careful track of your names (which most don't). TO avoid this you can write `options("warnPartialMatchDollar"=TRUE)` at the beginning of your scripts, so that you get a warning whenever partial matching is used.
 
@@ -375,7 +390,7 @@ list1[grepl('vec', names(list1))]
 
 ## 'If' statements and 'for' loops
 
-If statements and for loops both fall in the category of 'control flows'. Another type of loop not covered here is the 'while' loop, which is like a or loop, but stops iterating until some condition is satisfied.
+If statements and for loops both fall in the category called 'control flows'. Another type of loop not covered here is the 'while' loop, which is like a for loop, but stops iterating once some condition is satisfied.
 
 ### If statements
 
@@ -410,7 +425,7 @@ if(run_code) {
 }
 x
 y
-# If statements are typically most useful when the TRUE/FALSE is generated within 'if()'
+# If statements are most useful when the TRUE/FALSE is generated within the code
 x <- rnorm(100)
 summary(x)
 if(any(x > 1.5)) x <- x - 0.5
@@ -480,7 +495,6 @@ Here's a quick recap of the main data object types discussed in this section, an
     * If `vec1` is a single-element vector, `list1[[vec1]]` extracts the element `vec1` refers to, as its own object.
     * `list1[vec1]` returns a list containing the elements of `list1` referred to by `vec1`.
     * `list1$element1` returns the element of `list1` named `element1`, as its own object.
-    * Sometimes lists are also called vectors, with single-variable vectors distinguished as 'atomic vectors'. This document will only use 'vector' to mean single-variable vectors.
 
 
 

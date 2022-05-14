@@ -17,7 +17,7 @@ Some things to know about function arguments:
 
 ## How to write functions {#functions-user-defined-functions}
 
-It's easy to write your own functions, and the more you use R the more you'll do it. Running code that defines a function -- i.e. assigns the written function to the name you give it -- puts that function in your environment available to be called upon, like assigning a dat object.
+It's easy to write your own functions, and the more you use R the more you'll do it. Running code that defines a function -- i.e. assigns the written function to the name you give it -- puts that function in your environment available to be called upon, like assigning a data object.
 
 Each function has a name, arguments (if any), a body and an output. Defining a function involves writing some version of the following:
 
@@ -31,7 +31,7 @@ function_name <- function(function_arguments) {
 
 A simple example that works:
 ```{r eval=FALSE}
-double_F <- function(x) {  # I use _F in function names so it's clear they're functions.
+double_F <- function(x) {  # I use _F in my own function names for convenience.
   y <- x * 2
   return(y)
 }
@@ -40,14 +40,15 @@ double_F(7.5)
 double_F(1:6)  # This works because the operation in the body of double_F works on a
 #   numerical x vector of any length.
 ```
-When R runs a function it works through the following process:
+
+**When R runs a function it works through the following process**:
 
 1. Starts working through the operations inside the function definition, in this case `y <- x * 2`
 2. If it encounters any objects that haven't been defined inside the body, checks if these objects are function arguments, which, in this case, `x` is.
 3. Continues the operations using any such required function arguments, and stores any newly assigned objects in the environment.
 4. Returns the object specified in the return line.
 
-Some things worth knowing about user-defined functions:
+**Some things worth knowing about user-defined functions**:
 
 * <u>The 'return' line isn't always needed</u>. If the function has no specified return value, and the last line of the function body is an operation with no assignment, the function will return the result of that last operation.
     * The squiggly brackets `{}` also aren't needed, if the function definition fits in one line.
@@ -147,17 +148,17 @@ The namsepace environment sits above (i.e. encloses) the global environment, and
 This document focuses on using R for analysing data, for which the software development side of things is not particularly relevant. If you delve into the development side of R, you'll encounter a lot more intricate details about environments.
 
 
-## Applying a function to multiple things simultaneously {#functions-apply}
+## Applying functions repeatedly {#functions-apply}
 
 The 'apply' family of functions -- e.g. `lapply()` -- run functions on multiple elements simultaneously. They're usually a better alternative to loops (see section \@ref(object-types-loops)): instead of writing a code chunk inside a for loop, write it inside a user-defined function, then run that function on all the desired objects/elements with `lapply()` (or another apply function).
 
-A few cases when apply functions are useful:
+**Apply functions are useful in several situations**:
 
-* </u>Whenever a loop would be useful and the loop iterations are not recursive</u> (i.e. the iterations do not require outcomes from previous loop iterations).
-* Sometimes you want to do the <u>same thing to multiple rows or columns of a data frame</u>, and no function exists that does it all at once. In this case you can take or write a function that works on one row or column, and combine it with apply. The data.table package is set up for using `lapply()` on multiple columns at once.
-* Simulation models I've worked on have a data frame of results for each simulated entity (e.g. each bank). The data frames are stored together as elements of one list. To run simulations, you can write a function that runs on one entity, then run it on all entities with `lapply()`.
+* <u>Whenever a loop would be useful and the loop iterations are not recursive</u> (i.e. the iterations do not require outcomes from previous loop iterations).
+* Sometimes you want to do the <u>same thing to multiple rows or columns of a data frame</u>, and no function exists that does it all at once. In this case you can take or write a function that works on one row or column, and run that function in lapply/apply/etc.
+* Sometimes you have a list of datasets and want to run the same function on each dataset. For example, simulation models I've worked on have a data frame of results for each simulated entity (e.g. each bank), stored together in a list. To run simulations, you can write a function that runs on one entity, then run it on all entities with `lapply()`.
 
-In order of usefulness, the family comprises:
+**The apply family comprises, in order of usefulness**:
 
 * `lapply()` AKA <u>list apply</u>. Runs a function on every element of a list (or vector) and returns a list of the results.
 * `mapply()` AKA <u>multivariate apply</u>. Takes two or more lists of the same length, and does the same thing as `lapply()`, but running the function on the corresponding elements from each of the lists. 
@@ -165,11 +166,11 @@ In order of usefulness, the family comprises:
     * *Careful*: `sapply()` can be a bit unpredictable in the format that it returns results. It's often better to combine `unlist()` with `lapply()`, to turn the list output into a vector. 
 * `apply()`. Runs a function on every row, or every column, of a data frame or matrix, and tries to return a matrix. People often prefer using `lapply()` because its syntax is neater.
 
-The examples will focus on `lapply()`. Run `?lapply` and you'll see the arguments are:
+**The following examples will focus on `lapply()`**. Run `?lapply` and you'll see the arguments are:
 
 * X: A vector or list. The function specified in FUN will be run on each element of this vector or list, one at a time. Specifically, these elements will each be used as the first argument into that function.
 * FUN: The function to apply. If it's a one-liner user-defined function, one option is to defined is inside the call to lapply.
-* ...: Any other arguments that also need to be passed to FUN, but are the same each time FUN is called (i.e. there is not iteration for them).
+* ...: Any other arguments that also need to be passed to FUN, but are the same each time FUN is called (i.e. there is no iteration for them).
 
 ```{R eval=FALSE}
 # Say we want the product of each row from the iris dataset (excluding the Species column)
