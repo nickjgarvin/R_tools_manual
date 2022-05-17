@@ -23,7 +23,7 @@
 <meta name="author" content="Nick Garvin" />
 
 
-<meta name="date" content="2022-05-14" />
+<meta name="date" content="2022-05-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -201,16 +201,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="5.3.1" data-path="data-table-and-magrittr.html"><a href="data-table-and-magrittr.html#data-table-index-shortcuts"><i class="fa fa-check"></i><b>5.3.1</b> Row and column indexing utilises shortcuts</a></li>
 <li class="chapter" data-level="5.3.2" data-path="data-table-and-magrittr.html"><a href="data-table-and-magrittr.html#data-table-assignment"><i class="fa fa-check"></i><b>5.3.2</b> The in-place assignment operator <code>:=</code></a></li>
-<li class="chapter" data-level="5.3.3" data-path="data-table-and-magrittr.html"><a href="data-table-and-magrittr.html#data-table-by"><i class="fa fa-check"></i><b>5.3.3</b> Operations on <u>groups</u> of rows</a></li>
+<li class="chapter" data-level="5.3.3" data-path="data-table-and-magrittr.html"><a href="data-table-and-magrittr.html#data-table-by"><i class="fa fa-check"></i><b>5.3.3</b> Operations <u>by groups</u> of rows</a></li>
 <li class="chapter" data-level="5.3.4" data-path="data-table-and-magrittr.html"><a href="data-table-and-magrittr.html#data-table-functions"><i class="fa fa-check"></i><b>5.3.4</b> Handy data.table functions</a></li>
 </ul></li>
-<li class="chapter" data-level="5.4" data-path="data-table-and-magrittr.html"><a href="data-table-and-magrittr.html#combining-data.table-and-magrittr"><i class="fa fa-check"></i><b>5.4</b> Combining data.table and magrittr</a></li>
+<li class="chapter" data-level="5.4" data-path="data-table-and-magrittr.html"><a href="data-table-and-magrittr.html#data-table-magrittr"><i class="fa fa-check"></i><b>5.4</b> Combining data.table and magrittr</a></li>
 <li class="chapter" data-level="5.5" data-path="data-table-and-magrittr.html"><a href="data-table-and-magrittr.html#packages-why-not-dplyr"><i class="fa fa-check"></i><b>5.5</b> Why data.table rather than dplyr here</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="graphs.html"><a href="graphs.html"><i class="fa fa-check"></i><b>6</b> Graphs</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="graphs.html"><a href="graphs.html#base-r-graph-examples"><i class="fa fa-check"></i><b>6.1</b> Base R graph examples</a></li>
-<li class="chapter" data-level="6.2" data-path="graphs.html"><a href="graphs.html#ggplot-graph-examples"><i class="fa fa-check"></i><b>6.2</b> ggplot graph examples</a></li>
+<li class="chapter" data-level="6.1" data-path="graphs.html"><a href="graphs.html#base-r-or-ggplot"><i class="fa fa-check"></i><b>6.1</b> Base R or ggplot?</a></li>
+<li class="chapter" data-level="6.2" data-path="graphs.html"><a href="graphs.html#base-r-graph-examples"><i class="fa fa-check"></i><b>6.2</b> Base R graph examples</a></li>
+<li class="chapter" data-level="6.3" data-path="graphs.html"><a href="graphs.html#ggplot-graph-examples"><i class="fa fa-check"></i><b>6.3</b> ggplot graph examples</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="coming-soon.html"><a href="coming-soon.html"><i class="fa fa-check"></i><b>7</b> Coming soon</a>
 <ul>
@@ -272,19 +273,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb20-6"><a href="functions.html#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="fu">double_F</span>(<span class="fl">7.5</span>)</span>
 <span id="cb20-7"><a href="functions.html#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="fu">double_F</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>)  <span class="co"># This works because the operation in the body of double_F works on a</span></span>
 <span id="cb20-8"><a href="functions.html#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   numerical x vector of any length.</span></span></code></pre></div>
-<p><strong>When R runs a function it works through the following process</strong>:</p>
-<ol style="list-style-type: decimal">
-<li>Starts working through the operations inside the function definition, in this case <code>y &lt;- x * 2</code></li>
-<li>If it encounters any objects that haven’t been defined inside the body, checks if these objects are function arguments, which, in this case, <code>x</code> is.</li>
-<li>Continues the operations using any such required function arguments, and stores any newly assigned objects in the environment.</li>
-<li>Returns the object specified in the return line.</li>
-</ol>
 <p><strong>Some things worth knowing about user-defined functions</strong>:</p>
 <ul>
-<li><u>The ‘return’ line isn’t always needed</u>. If the function has no specified return value, and the last line of the function body is an operation with no assignment, the function will return the result of that last operation.
+<li><u>The ‘return’ line isn’t always needed</u>. If the function has no return value, and the last line in the function is not an assignment, the function will return the result of the operation in the last line.
 <ul>
 <li>The squiggly brackets <code>{}</code> also aren’t needed, if the function definition fits in one line.</li>
-<li>So, for example, <code>double_F &lt;- function(x) x * 2</code> works just as well as the example function definition above. Try it. Single-line functions can be useful, as demonstrated in Section [X].</li>
+<li>So, for example, <code>double_F &lt;- function(x) x * 2</code> works just as well as the example above. Try it. Single-line functions can be useful, as demonstrated in section <a href="functions.html#functions-apply">4.3</a>.</li>
 </ul></li>
 <li><u>The argument names have no consequence</u>.
 <ul>
@@ -341,6 +335,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb21-39"><a href="functions.html#cb21-39" aria-hidden="true" tabindex="-1"></a><span class="fu">quarterendify_F</span>(<span class="fu">c</span>(<span class="st">&#39;2021-03-30&#39;</span>, <span class="st">&#39;2021-03-31&#39;</span>, <span class="st">&#39;2021-04-01&#39;</span>), <span class="at">as_numeric=</span><span class="cn">TRUE</span>)</span>
 <span id="cb21-40"><a href="functions.html#cb21-40" aria-hidden="true" tabindex="-1"></a><span class="fu">quarterendify_F</span>(<span class="fu">c</span>(<span class="st">&#39;2021-03-30&#39;</span>, <span class="st">&#39;2021-03-31&#39;</span>, <span class="st">&#39;2021-04-1&#39;</span>))</span>
 <span id="cb21-41"><a href="functions.html#cb21-41" aria-hidden="true" tabindex="-1"></a><span class="fu">quarterendify_F</span>(<span class="fu">c</span>(<span class="st">&#39;30-03-2021&#39;</span>, <span class="st">&#39;31-03-2021&#39;</span>, <span class="st">&#39;01-04-2021&#39;</span>))</span></code></pre></div>
+<p><strong>When R runs a function it works through the following process</strong>:</p>
+<ol style="list-style-type: decimal">
+<li>Starts working through the operations inside the function definition, in this case <code>y &lt;- x * 2</code></li>
+<li>If it encounters any objects that haven’t been defined inside the body, checks if these objects are function arguments, which, in this case, <code>x</code> is.</li>
+<li>Continues the operations using any such required function arguments, and stores any newly assigned objects in the environment.</li>
+<li>Returns the object specified in the return line.</li>
+</ol>
 <!-- <u>Tip for writing user-defined functions</u>. If the function has more than one or two operations, don't try to write the whole function in one go before checking if the operations work. To make it easier, assign some objects in your environment that match the arguments, and test the operations within the functions as you write them. Once the function is written, clear the environment (ctrl + shift + f10) to be sure that the function is using its arguments rather than the objects you assigned, and then test the function out. -->
 <div id="why-put-your-operations-inside-user-defined-functions" class="section level3 hasAnchor" number="4.1.1">
 <h3><span class="header-section-number">4.1.1</span> Why put your operations inside user-defined functions?<a href="functions.html#why-put-your-operations-inside-user-defined-functions" class="anchor-section" aria-label="Anchor link to header"></a></h3>

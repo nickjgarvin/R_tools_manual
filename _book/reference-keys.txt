@@ -42,9 +42,10 @@ data-table-index-shortcuts
 data-table-assignment
 data-table-by
 data-table-functions
-combining-data.table-and-magrittr
+data-table-magrittr
 packages-why-not-dplyr
 graphs
+base-r-or-ggplot
 base-r-graph-examples
 ggplot-graph-examples
 coming-soon

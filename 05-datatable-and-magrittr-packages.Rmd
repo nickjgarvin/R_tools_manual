@@ -41,7 +41,7 @@ By default, the object to the left of `%>%` is the *first* argument in the funct
 ```{r eval=FALSE}
 cars$speed %>% unique %>% median %>% c(1, .)
 ```
-These examples feed a vector through the pipes, but pipes worth with any type of data object. Pipes with data tables are discusses in section [x].
+These examples feed a vector through the pipes, but pipes worth with any type of data object. Pipes with data tables are discussed in section \@ref(data-table-magrittr).
 
 
 ## The data.table package
@@ -91,9 +91,10 @@ str(datatable1[Sepal.Length == 100])  # Data table follows the environment hiera
 #   by first looking for (and finding) Sepal.Length inside [].
 # Note that when there's no argument after the comma in [, ], data.table lets you omit it
 ```
+
 **Columns are treated like a list of vectors**
 
-Similar to rows, when indexing columns, the column names do not need to be provided as strings. The columns are recognised as objects.
+Similar to indexing rows, when indexing columns, the column names do not need to be provided as strings. The columns are recognised as objects.
 
 ```{r eval=FALSE}
 dataframe1 <- iris
@@ -189,7 +190,7 @@ dt2[, Sepal.Length := NA]
 dt1  # dt1 has not been changed because copy() gave dt2 a new memory address.
 ```
  
-### Operations on <u>groups</u> of rows {#data-table-by}
+### Operations <u>by groups</u> of rows {#data-table-by}
 
 **First, observe how operations work without any row grouping**.
 
@@ -280,7 +281,7 @@ dt1[, lapply(.SD, function(x) x + 10), .SDcols=c('Sepal.Length', 'Sepal.Width')]
 ```
 
 
-## Combining data.table and magrittr
+## Combining data.table and magrittr {#data-table-magrittr}
 
 The combination of data tables and pipes produces neat, concise and readable code. Each line modifies the data table, either within its index operators `[]`, or by calling a function on the data table. When using the index operators, the line starts with `.[`, where the `.` represents the output from the previous line.
 

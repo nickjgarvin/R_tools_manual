@@ -41,18 +41,12 @@ double_F(1:6)  # This works because the operation in the body of double_F works 
 #   numerical x vector of any length.
 ```
 
-**When R runs a function it works through the following process**:
-
-1. Starts working through the operations inside the function definition, in this case `y <- x * 2`
-2. If it encounters any objects that haven't been defined inside the body, checks if these objects are function arguments, which, in this case, `x` is.
-3. Continues the operations using any such required function arguments, and stores any newly assigned objects in the environment.
-4. Returns the object specified in the return line.
 
 **Some things worth knowing about user-defined functions**:
 
-* <u>The 'return' line isn't always needed</u>. If the function has no specified return value, and the last line of the function body is an operation with no assignment, the function will return the result of that last operation.
+* <u>The 'return' line isn't always needed</u>. If the function has no return value, and the last line in the function is not an assignment, the function will return the result of the operation in the last line.
     * The squiggly brackets `{}` also aren't needed, if the function definition fits in one line.
-    * So, for example, `double_F <- function(x) x * 2` works just as well as the example function definition above. Try it. Single-line functions can be useful, as demonstrated in Section [X].
+    * So, for example, `double_F <- function(x) x * 2` works just as well as the example above. Try it. Single-line functions can be useful, as demonstrated in section \@ref(functions-apply).
 * <u>The argument names have no consequence</u>.
     * For example, `fun1 <- function(x) x * 2` and `fun2 <- function(z) z * 2` and `fun3 <- function(push_the_envelope_watch_it_bend) push_the_envelope_watch_it_bend * 2` do identical things.
     * But, as always, try choose the names to make it easy for a reader to understand what the function is doing. `x` is a commonly used argument name because it references the typical mathematical function definition $y=f(x)$.
@@ -105,9 +99,15 @@ quarterendify_F(c('2021-03-30', '2021-03-31', '2021-04-1'))
 quarterendify_F(c('30-03-2021', '31-03-2021', '01-04-2021'))
 ```
 
+**When R runs a function it works through the following process**:
+
+1. Starts working through the operations inside the function definition, in this case `y <- x * 2`
+2. If it encounters any objects that haven't been defined inside the body, checks if these objects are function arguments, which, in this case, `x` is.
+3. Continues the operations using any such required function arguments, and stores any newly assigned objects in the environment.
+4. Returns the object specified in the return line.
+
 
 <!-- <u>Tip for writing user-defined functions</u>. If the function has more than one or two operations, don't try to write the whole function in one go before checking if the operations work. To make it easier, assign some objects in your environment that match the arguments, and test the operations within the functions as you write them. Once the function is written, clear the environment (ctrl + shift + f10) to be sure that the function is using its arguments rather than the objects you assigned, and then test the function out. -->
-
 
 ### Why put your operations inside user-defined functions?
 

@@ -23,7 +23,7 @@
 <meta name="author" content="Nick Garvin" />
 
 
-<meta name="date" content="2022-05-14" />
+<meta name="date" content="2022-05-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -201,16 +201,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="5.3.1" data-path="data-table-and-magrittr.html"><a href="data-table-and-magrittr.html#data-table-index-shortcuts"><i class="fa fa-check"></i><b>5.3.1</b> Row and column indexing utilises shortcuts</a></li>
 <li class="chapter" data-level="5.3.2" data-path="data-table-and-magrittr.html"><a href="data-table-and-magrittr.html#data-table-assignment"><i class="fa fa-check"></i><b>5.3.2</b> The in-place assignment operator <code>:=</code></a></li>
-<li class="chapter" data-level="5.3.3" data-path="data-table-and-magrittr.html"><a href="data-table-and-magrittr.html#data-table-by"><i class="fa fa-check"></i><b>5.3.3</b> Operations on <u>groups</u> of rows</a></li>
+<li class="chapter" data-level="5.3.3" data-path="data-table-and-magrittr.html"><a href="data-table-and-magrittr.html#data-table-by"><i class="fa fa-check"></i><b>5.3.3</b> Operations <u>by groups</u> of rows</a></li>
 <li class="chapter" data-level="5.3.4" data-path="data-table-and-magrittr.html"><a href="data-table-and-magrittr.html#data-table-functions"><i class="fa fa-check"></i><b>5.3.4</b> Handy data.table functions</a></li>
 </ul></li>
-<li class="chapter" data-level="5.4" data-path="data-table-and-magrittr.html"><a href="data-table-and-magrittr.html#combining-data.table-and-magrittr"><i class="fa fa-check"></i><b>5.4</b> Combining data.table and magrittr</a></li>
+<li class="chapter" data-level="5.4" data-path="data-table-and-magrittr.html"><a href="data-table-and-magrittr.html#data-table-magrittr"><i class="fa fa-check"></i><b>5.4</b> Combining data.table and magrittr</a></li>
 <li class="chapter" data-level="5.5" data-path="data-table-and-magrittr.html"><a href="data-table-and-magrittr.html#packages-why-not-dplyr"><i class="fa fa-check"></i><b>5.5</b> Why data.table rather than dplyr here</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="graphs.html"><a href="graphs.html"><i class="fa fa-check"></i><b>6</b> Graphs</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="graphs.html"><a href="graphs.html#base-r-graph-examples"><i class="fa fa-check"></i><b>6.1</b> Base R graph examples</a></li>
-<li class="chapter" data-level="6.2" data-path="graphs.html"><a href="graphs.html#ggplot-graph-examples"><i class="fa fa-check"></i><b>6.2</b> ggplot graph examples</a></li>
+<li class="chapter" data-level="6.1" data-path="graphs.html"><a href="graphs.html#base-r-or-ggplot"><i class="fa fa-check"></i><b>6.1</b> Base R or ggplot?</a></li>
+<li class="chapter" data-level="6.2" data-path="graphs.html"><a href="graphs.html#base-r-graph-examples"><i class="fa fa-check"></i><b>6.2</b> Base R graph examples</a></li>
+<li class="chapter" data-level="6.3" data-path="graphs.html"><a href="graphs.html#ggplot-graph-examples"><i class="fa fa-check"></i><b>6.3</b> ggplot graph examples</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="coming-soon.html"><a href="coming-soon.html"><i class="fa fa-check"></i><b>7</b> Coming soon</a>
 <ul>
@@ -263,7 +264,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="data-table-and-magrittr.html#cb30-1" aria-hidden="true" tabindex="-1"></a>cars<span class="sc">$</span>speed <span class="sc">%&gt;%</span> <span class="fu">unique</span>(<span class="at">incomparables=</span><span class="fu">c</span>(<span class="dv">24</span>)) <span class="sc">%&gt;%</span> median</span></code></pre></div>
 <p>By default, the object to the left of <code>%&gt;%</code> is the <em>first</em> argument in the function to the right, but it does not need to be. Just use a dot <code>.</code> to state which argument you want it to be:</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="data-table-and-magrittr.html#cb31-1" aria-hidden="true" tabindex="-1"></a>cars<span class="sc">$</span>speed <span class="sc">%&gt;%</span> unique <span class="sc">%&gt;%</span> median <span class="sc">%&gt;%</span> <span class="fu">c</span>(<span class="dv">1</span>, .)</span></code></pre></div>
-<p>These examples feed a vector through the pipes, but pipes worth with any type of data object. Pipes with data tables are discusses in section [x].</p>
+<p>These examples feed a vector through the pipes, but pipes worth with any type of data object. Pipes with data tables are discussed in section <a href="data-table-and-magrittr.html#data-table-magrittr">5.4</a>.</p>
 </div>
 <div id="the-data.table-package" class="section level2 hasAnchor" number="5.3">
 <h2><span class="header-section-number">5.3</span> The data.table package<a href="data-table-and-magrittr.html#the-data.table-package" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -303,7 +304,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb33-6"><a href="data-table-and-magrittr.html#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   by first looking for (and finding) Sepal.Length inside [].</span></span>
 <span id="cb33-7"><a href="data-table-and-magrittr.html#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that when there&#39;s no argument after the comma in [, ], data.table lets you omit it</span></span></code></pre></div>
 <p><strong>Columns are treated like a list of vectors</strong></p>
-<p>Similar to rows, when indexing columns, the column names do not need to be provided as strings. The columns are recognised as objects.</p>
+<p>Similar to indexing rows, when indexing columns, the column names do not need to be provided as strings. The columns are recognised as objects.</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="data-table-and-magrittr.html#cb34-1" aria-hidden="true" tabindex="-1"></a>dataframe1 <span class="ot">&lt;-</span> iris</span>
 <span id="cb34-2"><a href="data-table-and-magrittr.html#cb34-2" aria-hidden="true" tabindex="-1"></a>datatable1 <span class="ot">&lt;-</span> iris <span class="sc">%&gt;%</span> as.data.table</span>
 <span id="cb34-3"><a href="data-table-and-magrittr.html#cb34-3" aria-hidden="true" tabindex="-1"></a>dataframe1[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="st">&#39;Species&#39;</span>]</span>
@@ -365,7 +366,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb42-5"><a href="data-table-and-magrittr.html#cb42-5" aria-hidden="true" tabindex="-1"></a>dt1  <span class="co"># dt1 has not been changed because copy() gave dt2 a new memory address.</span></span></code></pre></div>
 </div>
 <div id="data-table-by" class="section level3 hasAnchor" number="5.3.3">
-<h3><span class="header-section-number">5.3.3</span> Operations on <u>groups</u> of rows<a href="data-table-and-magrittr.html#data-table-by" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<h3><span class="header-section-number">5.3.3</span> Operations <u>by groups</u> of rows<a href="data-table-and-magrittr.html#data-table-by" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>First, observe how operations work without any row grouping</strong>.</p>
 <p>As we saw in the in-place assignment examples, columns in a data table can be operated on after the comma in the indexing operator <code>[]</code>. When the operations are not combined with assignment, they just return the result of the operations.</p>
 <div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="data-table-and-magrittr.html#cb43-1" aria-hidden="true" tabindex="-1"></a>dt1 <span class="ot">&lt;-</span> iris <span class="sc">%&gt;%</span> as.data.table</span>
@@ -425,8 +426,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb50-6"><a href="data-table-and-magrittr.html#cb50-6" aria-hidden="true" tabindex="-1"></a><span class="co"># data.table has several other shorthands like .SD that add functionality and felxibility.</span></span></code></pre></div>
 </div>
 </div>
-<div id="combining-data.table-and-magrittr" class="section level2 hasAnchor" number="5.4">
-<h2><span class="header-section-number">5.4</span> Combining data.table and magrittr<a href="data-table-and-magrittr.html#combining-data.table-and-magrittr" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="data-table-magrittr" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> Combining data.table and magrittr<a href="data-table-and-magrittr.html#data-table-magrittr" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The combination of data tables and pipes produces neat, concise and readable code. Each line modifies the data table, either within its index operators <code>[]</code>, or by calling a function on the data table. When using the index operators, the line starts with <code>.[</code>, where the <code>.</code> represents the output from the previous line.</p>
 <div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="data-table-and-magrittr.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Consider our earlier assignment of two new columns:</span></span>
 <span id="cb51-2"><a href="data-table-and-magrittr.html#cb51-2" aria-hidden="true" tabindex="-1"></a>dt1 <span class="ot">&lt;-</span> iris <span class="sc">%&gt;%</span> as.data.table</span>

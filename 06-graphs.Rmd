@@ -1,13 +1,6 @@
 # Graphs {#graphs}
 
-
-Base R and the ggplot2 package both have great graphing functionality. (And many other packages exist for less common types types of visualisations.) You can stick to one, but both come in handy. This is one way to use them:
-
-* <u>Base R for quick and dirty graphs</u>, when you just want to see what the data look like, and you don't need to show it to anyone else. For examle, base R's `plot()` was used in the section \@ref(object-types-loops) code.
-* <u>ggplot2 for professional-looking graphs that don't have a high degree of customisation</u>. Most graphs tend to fall in this category.
-* <u>Base R for highly customised graphs</u>. ggplot2 can be particularly fiddly if you want to include something in your graph that it isn't built for. These cases are getting rarer as the package is continually developed, but when you encounter one, it can be much easier to use base R than trying to wrangle ggplot2.
-
-Below is some example code for a few different types of graphs. It all assumes that you have data.table, magrittr and ggplot2 installed and loaded.
+This chapter provides working example code for several graph types, which you can copy and modify for your own use. The code assumes that you have data.table, magrittr and ggplot2 installed and loaded.
 
 
 ```{r message=FALSE, warning=FALSE}
@@ -16,6 +9,14 @@ library(ggplot2)
 library(data.table)
 library(magrittr)
 ```
+
+## Base R or ggplot?
+
+Base R and the ggplot2 package both have great graphing functionality. (And many other packages exist for less common types types of visualisations.) You can stick to one, but both come in handy. This is one way to use them:
+
+* <u>Base R for quick and dirty graphs</u>, when you just want to see what the data look like, and you don't need to show it to anyone else. For example, base R's `plot()` was used in the section \@ref(object-types-loops) code.
+* <u>ggplot2 for professional-looking graphs that don't have a high degree of customisation</u>. Most graphs tend to fall in this category.
+* <u>Base R for highly customised graphs</u>. ggplot2 can be particularly fiddly if you want to include something in your graph that it isn't built for. These cases are getting rarer as the package is continually developed, but when you encounter one, it can be much easier to use base R than trying to wrangle ggplot2.
 
 
 ## Base R graph examples
