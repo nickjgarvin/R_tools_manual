@@ -19,7 +19,7 @@
 
 **TIP: save your R scripts, not your R 'sessions'** (i.e. the collection of data objects your script has created). Rather than opening a saved session, it's better to recreate it by running your saved script. Then you have the R objects you need <u>and</u> a record of how they were created <u>and</u> the ability to reproduce them.
 
-**TIP: regularly run your whole script, to check everything still works.** Before each re-run, clear your session to make sure it's starting fresh. You can clear your session by typing `ctr + shift + F10`, but RStudio first needs to have some settings adjusted. This is common practice and needs to be done due to [legacy issues](https://community.rstudio.com/t/defaults-of-saving-and-restoring-workspace/939). 
+**TIP: regularly run your whole script, to check everything still works.** Before each re-run, <u>clear your session</u> to make sure it's starting fresh. You can clear your session by typing `ctr + shift + F10`, but RStudio first needs to have some settings adjusted. This is common practice and needs to be done due to [legacy issues](https://community.rstudio.com/t/defaults-of-saving-and-restoring-workspace/939). 
 
 1. Click "Tools, then "Global Options".
 2. In "R General" and "Basic", under "Workspace", make sure "Restore .RData into workspace at startup" is unticked, and "Save workspace to .RData on exit:" is set to "Never".
@@ -28,14 +28,15 @@
 
 **Other commonly used RStudio functionality**:
 
-* <u>RStudio projects</u> are useful for grouping files that belong to the same piece of work, such as scripts that relate to each other, input files read by the script/s (e.g. datasets stored locally), and outputs. These are discussed in section \@ref(import-data-projects)
-* <u>R Markdown</u> is great for presenting code/output/text to someone that will be more interested in reading the content than running the code themselves. For example, this document was produced in R Markdown. But <u>only use it for these purposes</u> -- it wasn't intended to be used for general coding, which standard scripts are better for.
+* <u>RStudio projects</u> are useful for grouping files that belong to the same piece of work, such as scripts that relate to each other, input files read by the script/s (e.g. datasets stored locally), and outputs. It's good habit to always do your work in an RStudio project. These are discussed in section \@ref(import-data-projects)
+* <u>R Markdown</u> is great for presenting code/output/text to someone that will be more interested in reading the content than running the code themselves. For example, this document was produced in R Markdown. But <u>only use it for these purposes</u> -- it wasn't intended to be used for general coding, which standard scripts are better for. 
 
 ## What is a line of R code? {#getting-started-what-is}
 
 These are things worth knowing before you start:
 
 * **Comments**: R ignores any line that starts with `#`, regardless of what is after it. If `#` appears partway through a line, everything after the `#` is ignored.
+* **Error messages**: When the console shows a message starting with 'Error', the piece of code that produced that message did not run. When the message starts with 'Warning', the code did run, but something unintended may have happened. The information in this manual should help you to understand the language used in these messages.
 * **R is case sensitive**. 
 * **R uses sequential execution**. R runs code one line at a time. The results of one line are produced, and ready to use, before the next line is run. Lines are separated by typing `enter`.
    * <u>Splitting lines</u>: R reads multiple lines as one if the first line(s) have an unfinished operation, such as `(` without `)`, or `+` with nothing afterward until the next line.

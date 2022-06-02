@@ -6,7 +6,7 @@ Objects are pieces of data that are named and stored in the R session (AKA envir
 
 <b>Functions</b> do things to data (and other) objects. Most lines of R code include at least a data object and a function. Functions are discussed in section \@ref(functions).
 
-This chapter covers the types of data objects mentioned above and how to index them, followed by a brief section on if statements and for loops. It finishes with a recap of data types and indexing.
+This chapter covers a few key data types and how to index them, followed by a brief section on if statements and for loops. The final part is a recap, which you could read first if you like.
 
 ## Vectors
 
@@ -478,7 +478,7 @@ identical(x_cumul1, x_cumul2)
 <!-- In the above, could demonstrate the speed differences, could also give an example of when a loop actually is useful. -->
 
 
-## Object type and indexing recap
+## Recap
 
 Here's a quick recap of the main data object types discussed in this section, and how to index them:
 

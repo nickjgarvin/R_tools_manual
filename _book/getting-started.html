@@ -23,7 +23,7 @@
 <meta name="author" content="Nick Garvin" />
 
 
-<meta name="date" content="2022-05-18" />
+<meta name="date" content="2022-06-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -168,7 +168,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.6.1" data-path="object-types.html"><a href="object-types.html#if-statements"><i class="fa fa-check"></i><b>2.6.1</b> If statements</a></li>
 <li class="chapter" data-level="2.6.2" data-path="object-types.html"><a href="object-types.html#object-types-loops"><i class="fa fa-check"></i><b>2.6.2</b> For loops</a></li>
 </ul></li>
-<li class="chapter" data-level="2.7" data-path="object-types.html"><a href="object-types.html#object-type-and-indexing-recap"><i class="fa fa-check"></i><b>2.7</b> Object type and indexing recap</a></li>
+<li class="chapter" data-level="2.7" data-path="object-types.html"><a href="object-types.html#recap"><i class="fa fa-check"></i><b>2.7</b> Recap</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="obtaining-data.html"><a href="obtaining-data.html"><i class="fa fa-check"></i><b>3</b> Obtaining data</a>
 <ul>
@@ -256,7 +256,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Save the script if you want to keep it.</li>
 </ol>
 <p><strong>TIP: save your R scripts, not your R ‘sessions’</strong> (i.e. the collection of data objects your script has created). Rather than opening a saved session, it’s better to recreate it by running your saved script. Then you have the R objects you need <u>and</u> a record of how they were created <u>and</u> the ability to reproduce them.</p>
-<p><strong>TIP: regularly run your whole script, to check everything still works.</strong> Before each re-run, clear your session to make sure it’s starting fresh. You can clear your session by typing <code>ctr + shift + F10</code>, but RStudio first needs to have some settings adjusted. This is common practice and needs to be done due to <a href="https://community.rstudio.com/t/defaults-of-saving-and-restoring-workspace/939">legacy issues</a>.</p>
+<p><strong>TIP: regularly run your whole script, to check everything still works.</strong> Before each re-run, <u>clear your session</u> to make sure it’s starting fresh. You can clear your session by typing <code>ctr + shift + F10</code>, but RStudio first needs to have some settings adjusted. This is common practice and needs to be done due to <a href="https://community.rstudio.com/t/defaults-of-saving-and-restoring-workspace/939">legacy issues</a>.</p>
 <ol style="list-style-type: decimal">
 <li>Click “Tools, then”Global Options”.</li>
 <li>In “R General” and “Basic”, under “Workspace”, make sure “Restore .RData into workspace at startup” is unticked, and “Save workspace to .RData on exit:” is set to “Never”.</li>
@@ -264,7 +264,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ol>
 <p><strong>Other commonly used RStudio functionality</strong>:</p>
 <ul>
-<li><u>RStudio projects</u> are useful for grouping files that belong to the same piece of work, such as scripts that relate to each other, input files read by the script/s (e.g. datasets stored locally), and outputs. These are discussed in section <a href="obtaining-data.html#import-data-projects">3.3</a></li>
+<li><u>RStudio projects</u> are useful for grouping files that belong to the same piece of work, such as scripts that relate to each other, input files read by the script/s (e.g. datasets stored locally), and outputs. It’s good habit to always do your work in an RStudio project. These are discussed in section <a href="obtaining-data.html#import-data-projects">3.3</a></li>
 <li><u>R Markdown</u> is great for presenting code/output/text to someone that will be more interested in reading the content than running the code themselves. For example, this document was produced in R Markdown. But <u>only use it for these purposes</u> – it wasn’t intended to be used for general coding, which standard scripts are better for.</li>
 </ul>
 <div id="getting-started-what-is" class="section level2 hasAnchor" number="1.1">
@@ -272,6 +272,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>These are things worth knowing before you start:</p>
 <ul>
 <li><strong>Comments</strong>: R ignores any line that starts with <code>#</code>, regardless of what is after it. If <code>#</code> appears partway through a line, everything after the <code>#</code> is ignored.</li>
+<li><strong>Error messages</strong>: When the console shows a message starting with ‘Error’, the piece of code that produced that message did not run. When the message starts with ‘Warning’, the code did run, but something unintended may have happened. The information in this manual should help you to understand the language used in these messages.</li>
 <li><strong>R is case sensitive</strong>.</li>
 <li><strong>R uses sequential execution</strong>. R runs code one line at a time. The results of one line are produced, and ready to use, before the next line is run. Lines are separated by typing <code>enter</code>.
 <ul>

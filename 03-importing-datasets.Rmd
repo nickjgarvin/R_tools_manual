@@ -1,6 +1,6 @@
 # Obtaining data
 
-Most R data analysis involves working on data that is read from somewhere. This chapter covers ways of reading data, and where to store them.
+Most R data analysis involves working on data that is read from somewhere, such as a local saved file or an online source. This chapter covers ways of reading data, and where to store them.
 
 ## Common functions for importing data
 
@@ -9,7 +9,7 @@ Common functions for importing data include:
 * <u>read.table()</u> from base R. Reads most types of text files.
 * <u>read.csv()</u> from base R. A version of read.table() specifically for csv files.
 * <u>read.xlsx()</u> from the <u>openxlsx package</u>. Reads a worksheet from an excel file, including from an online source (i.e. the location is a website).
-* <u>fread()</u> from the <u>data.table package</u>. Reads a csv file in as a data table, much faster than read.csv().
+* <u>fread()</u> from the <u>data.table package</u>. Reads a csv file (and some other file types) in as a data table, much faster than read.csv(). Can read from a local file or an online source.
 * <u>read_csv()</u> from the <u>readr package</u>, part of Tidyverse. Reads a csv file in as a tibble.
 * <u>read_excel()</u> from the <u>readxl package</u>, part of Tidyverse. Reads a worksheet of an excel file, in as a tibble. For online sources, `openxlsx::read.xlsx()` tends to be easier.
 

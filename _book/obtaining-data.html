@@ -23,7 +23,7 @@
 <meta name="author" content="Nick Garvin" />
 
 
-<meta name="date" content="2022-05-18" />
+<meta name="date" content="2022-06-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -168,7 +168,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.6.1" data-path="object-types.html"><a href="object-types.html#if-statements"><i class="fa fa-check"></i><b>2.6.1</b> If statements</a></li>
 <li class="chapter" data-level="2.6.2" data-path="object-types.html"><a href="object-types.html#object-types-loops"><i class="fa fa-check"></i><b>2.6.2</b> For loops</a></li>
 </ul></li>
-<li class="chapter" data-level="2.7" data-path="object-types.html"><a href="object-types.html#object-type-and-indexing-recap"><i class="fa fa-check"></i><b>2.7</b> Object type and indexing recap</a></li>
+<li class="chapter" data-level="2.7" data-path="object-types.html"><a href="object-types.html#recap"><i class="fa fa-check"></i><b>2.7</b> Recap</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="obtaining-data.html"><a href="obtaining-data.html"><i class="fa fa-check"></i><b>3</b> Obtaining data</a>
 <ul>
@@ -241,7 +241,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="obtaining-data" class="section level1 hasAnchor" number="3">
 <h1><span class="header-section-number">Chapter 3</span> Obtaining data<a href="obtaining-data.html#obtaining-data" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Most R data analysis involves working on data that is read from somewhere. This chapter covers ways of reading data, and where to store them.</p>
+<p>Most R data analysis involves working on data that is read from somewhere, such as a local saved file or an online source. This chapter covers ways of reading data, and where to store them.</p>
 <div id="common-functions-for-importing-data" class="section level2 hasAnchor" number="3.1">
 <h2><span class="header-section-number">3.1</span> Common functions for importing data<a href="obtaining-data.html#common-functions-for-importing-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Common functions for importing data include:</p>
@@ -249,7 +249,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><u>read.table()</u> from base R. Reads most types of text files.</li>
 <li><u>read.csv()</u> from base R. A version of read.table() specifically for csv files.</li>
 <li><u>read.xlsx()</u> from the <u>openxlsx package</u>. Reads a worksheet from an excel file, including from an online source (i.e. the location is a website).</li>
-<li><u>fread()</u> from the <u>data.table package</u>. Reads a csv file in as a data table, much faster than read.csv().</li>
+<li><u>fread()</u> from the <u>data.table package</u>. Reads a csv file (and some other file types) in as a data table, much faster than read.csv(). Can read from a local file or an online source.</li>
 <li><u>read_csv()</u> from the <u>readr package</u>, part of Tidyverse. Reads a csv file in as a tibble.</li>
 <li><u>read_excel()</u> from the <u>readxl package</u>, part of Tidyverse. Reads a worksheet of an excel file, in as a tibble. For online sources, <code>openxlsx::read.xlsx()</code> tends to be easier.</li>
 </ul>
