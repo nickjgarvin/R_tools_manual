@@ -1,19 +1,19 @@
-# Obtaining data
+# Sourcing data
 
 Most R data analysis involves working on data that is read from somewhere, such as a local saved file or an online source. This chapter covers ways of reading data, and where to store them.
 
 ## Common functions for importing data
 
-Common functions for importing data include:
+Common functions for importing data include the following. They are all good options. I tend to use `fread()` for csv files and `read.xlsx` for Excel files.
 
 * <u>read.table()</u> from base R. Reads most types of text files.
 * <u>read.csv()</u> from base R. A version of read.table() specifically for csv files.
 * <u>read.xlsx()</u> from the <u>openxlsx package</u>. Reads a worksheet from an excel file, including from an online source (i.e. the location is a website).
-* <u>fread()</u> from the <u>data.table package</u>. Reads a csv file (and some other file types) in as a data table, much faster than read.csv(). Can read from a local file or an online source.
+* <u>fread()</u> from the <u>data.table package</u>. Reads a csv file (and some other file types) in as a data table, much faster than read.csv(). Can read from a local file or an online source. This is usually the best options if speed is an objective.
 * <u>read_csv()</u> from the <u>readr package</u>, part of Tidyverse. Reads a csv file in as a tibble.
 * <u>read_excel()</u> from the <u>readxl package</u>, part of Tidyverse. Reads a worksheet of an excel file, in as a tibble. For online sources, `openxlsx::read.xlsx()` tends to be easier.
 
-<b>To save data</b> from your R session to a local location in a common file format, use the functions above but replace `read` with `write`, for example, `write.csv()`.
+<b>To save data</b> from your R session to a local location in a common file format, use the functions above but replace `read` with `write`, for example, `write.csv()` or `fwrite()`.
 
 <b>To save R objects for use in a later R session</b>, read and write them as a '.rds' file type using `readRDS` and `writeRDS`. 
 

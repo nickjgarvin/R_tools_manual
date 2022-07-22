@@ -9,15 +9,17 @@
 
 <b>Use RStudio</b>, which makes writing, running and saving scripts easy. Although R is open source, RStudio is commercial software, but the standard version is free of charge, and if it doesn't stay that way someone will hopefully develop an open-source alternative. Some small parts of this document are specific to using R in RStudio. 
 
+## RStudio
+
 **To get started with RStudio**:
 
 1. Download and install R and RStudio (for windows, from here https://cran.rstudio.com/ and here https://www.rstudio.com/products/rstudio/download/#download), and open RStudio.
 2. Click "File", then "New file", then "R Script".
 3. Write code into the script.
-4. Run code by highlighting it and typing `ctrl+enter`, or run a line by hitting `ctrl+enter` when your cursor is on that line, or run the whole script down to your cursor by typing `ctrl+alt+b`.
+4. Run code by highlighting it and typing `ctrl + enter`, or run a line by hitting `ctrl + enter` when your cursor is on that line, or run the whole script down to your cursor by typing `ctrl + alt + b`.
 5. Save the script if you want to keep it.
 
-**TIP: save your R scripts, not your R 'sessions'** (i.e. the collection of data objects your script has created). Rather than opening a saved session, it's better to recreate it by running your saved script. Then you have the R objects you need <u>and</u> a record of how they were created <u>and</u> the ability to reproduce them.
+**TIP: save your R scripts, not your R 'sessions'**. (The session is the collection of data objects your script has created.) It's better to recreate the session by running your saved script than to open a pre-saved session. Then you'll have the R objects you need <u>and</u> a record of how they were created <u>and</u> the ability to reproduce them.
 
 **TIP: regularly run your whole script, to check everything still works.** Before each re-run, <u>clear your session</u> to make sure it's starting fresh. You can clear your session by typing `ctr + shift + F10`, but RStudio first needs to have some settings adjusted. This is common practice and needs to be done due to [legacy issues](https://community.rstudio.com/t/defaults-of-saving-and-restoring-workspace/939). 
 
@@ -28,15 +30,27 @@
 
 **Other commonly used RStudio functionality**:
 
-* <u>RStudio projects</u> are useful for grouping files that belong to the same piece of work, such as scripts that relate to each other, input files read by the script/s (e.g. datasets stored locally), and outputs. It's good habit to always do your work in an RStudio project. These are discussed in section \@ref(import-data-projects)
+* <u>RStudio projects</u> are very useful for grouping files that belong to the same piece of work, such as scripts that relate to each other, input files read by the script/s (e.g. datasets stored locally), and outputs. It's good habit to always do your work in an RStudio project. These are discussed in section \@ref(import-data-projects)
 * <u>R Markdown</u> is great for presenting code/output/text to someone that will be more interested in reading the content than running the code themselves. For example, this document was produced in R Markdown. But <u>only use it for these purposes</u> -- it wasn't intended to be used for general coding, which standard scripts are better for. 
+
+## Base R and installing packages {#getting-started-packages}
+
+<b>Base R</b> refers to R without any additional packages installed, which is what you get when you first install R. This document focuses mostly on base R, which can do a vast range of things. Packages build on base R to add functionality, but rarely do anything related to data manipulation that cannot be done in base R. Rather, they're usually intended to make doing that thing significantly easier, by reducing the amount of code required or making the operations faster. 
+
+<b>To use a package</b>:
+
+1. <u>Install</u> it on your computer by running `install.packages('<package name>')` in the console, for example `install.packages('data.table')`. This only needs to be done once.
+2. <u>Load</u> it each time you open a new R session, by running `library(<package name>)`, for example `library(data.table)`. Write it into the top of the script, for visibility. This brings its functions into your 'namespace' environment and makes them available to call.
+    * Alternatively, you can call a function from a package that is installed but not loaded, by typing the package name with `::`. For example, `data.table::melt()` calls the `melt()` function without data.table needing to be loaded. This avoids bringing the package's functions into the namespace environment and can help prevent function-name duplication.
+
+**Careful**: Using additional packages does some bring costs, like package dependencies, potential function-name duplication, and small overheads. Don't let that stop you. Just do this: only start relying on an additional package if it provides a noticeable benefit over what you have already. Also, if your code is running critical processes, make sure you're managing these risks.
+
+A few widely used packages can change how the R syntax looks, so if after reading sections \@ref(getting-started) and \@ref(object-types), you see R code that still looks foreign to you, this is probably the reason. Section \@ref(data-table-and-magrittr) covers that.
 
 ## What is a line of R code? {#getting-started-what-is}
 
 These are things worth knowing before you start:
 
-* **Comments**: R ignores any line that starts with `#`, regardless of what is after it. If `#` appears partway through a line, everything after the `#` is ignored.
-* **Error messages**: When the console shows a message starting with 'Error', the piece of code that produced that message did not run. When the message starts with 'Warning', the code did run, but something unintended may have happened. The information in this manual should help you to understand the language used in these messages.
 * **R is case sensitive**. 
 * **R uses sequential execution**. R runs code one line at a time. The results of one line are produced, and ready to use, before the next line is run. Lines are separated by typing `enter`.
    * <u>Splitting lines</u>: R reads multiple lines as one if the first line(s) have an unfinished operation, such as `(` without `)`, or `+` with nothing afterward until the next line.
@@ -49,6 +63,8 @@ These are things worth knowing before you start:
     * The operation on the right of `<-` is done before the name is assigned. So, for example, `x <- x + 1` does not cause a contradiction; it uses the pre-existing `x` on the right then creates the new `x` on the left.
 * **Object names**: names can be any text without spaces, but cannot start with numbers. Most people use underscores instead of spaces. Some old dogs use a dot.
 *	**Operations**: an operation can be run without an assignment, which will usually just display the result of that operation in the console.
+* **Comments**: R ignores any line that starts with `#`, regardless of what is after it. If `#` appears partway through a line, everything after the `#` is ignored.
+* **Error messages**: When the console shows a message starting with 'Error', the piece of code that produced that message did not run. When the message starts with 'Warning', the code did run, but something unintended may have happened. The information in this manual should help you to understand the language used in these messages.
 
 ## Coding style
 
@@ -59,19 +75,7 @@ Make your code easily readable, for your later self and for others. Some tips:
 * <u>Follow a style guide</u>, such as Hadley Wickham's (http://adv-r.had.co.nz/Style.html) or whatever you find and like. The important thing is that your code is readable, which this will help with.
 * <u>Spend time cleaning your code</u>, after you've first got it working, if the code is worth keeping. Code is clean when it achieves its purpose in close to as few steps as possible, and is neatly laid and out and commented. If your code isn't clean, it's reasonably likely to have mistakes that haven't been noticed. 
 
-## Base R and installing packages {#getting-started-packages}
 
-<b>Base R</b> refers to R without any additional packages installed, which is what you get when you first install R. This document focuses mostly on base R, which can do a vast range of things. Packages build on base R to add functionality, but rarely do anything related to data manipulation that cannot be done in base R. Rather, they're usually intended to make doing that thing easier, by reducing the amount of code required or making the operations faster. 
-
-<b>To use a package</b>:
-
-1. <u>Install</u> it on your computer by running `install.packages('<package name>')` in the console, for example `install.packages('data.table')`. This only needs to be done once.
-2. <u>Load</u> it each time you open a new R session, by running `library(<package name>)`, for example `library(data.table)`. Write it into the top of the script, for visibility. This brings its functions into your 'namespace' environment and makes them available to call.
-    * Alternatively, you can call a function from a package that is installed but not loaded, by typing the package name with `::`. For example, `data.table::melt()` calls the `melt()` function without data.table needing to be loaded. This avoids bringing the package's functions into the namespace environment and can help prevent function-name duplication.
-
-**Careful**: Using additional packages does some bring costs, like package dependencies, potential function-name duplication, and small overheads. Don't let that stop you. Just do this: only start relying on an additional package if it provides a noticeable benefit over what you have already. Also, if your code is running critical processes, make sure you're managing these risks.
-
-A few widely used packages can change how the R syntax looks, so if after reading sections \@ref(getting-started) and \@ref(object-types), you see R code that still looks foreign to you, this is probably the reason. Section \@ref(data-table-and-magrittr) covers that.
 
 ## Example code to play with
 

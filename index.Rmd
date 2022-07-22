@@ -23,7 +23,7 @@ output:
 
 **This manual provides the building blocks for using R for data analysis.** When combined in the right ways, these tools can do pretty much anything you can imagine that involves manipulating or modelling data. 
 
-**There are chunks of example code that you should copy and run yourself**. The chunks include demonstrations that have little meaning without seeing the output they create. The examples also include many commonly-used functions that are not discussed in the text. 
+**There are lots of chunks of example code. Copy and paste and run them yourself**. They include useful demonstrations, as well as many handy and commonly-used functions that you can borrow for your own code. 
 
 Everything before section \@ref(data-table-and-magrittr) is about tools in **base R** (i.e. R without any extra packages installed). Base R is worth understanding well no matter what packages you end up using, because base R has more flexibility than package alternatives. Section \@ref(data-table-and-magrittr) briefly covers two particularly useful packages -- **data.table** and **magrittr**. These are used in section \@ref(graphs) on graphs, which also briefly covers the **ggplot2** graphing package. 
 
@@ -31,4 +31,14 @@ Everything before section \@ref(data-table-and-magrittr) is about tools in **bas
 
 * This manual has more emphasis on working with quantitative data, and less on other R topics related to package development and programming more generally. 
 * Advanced R assumes use of Hadley Wickham's Tidyverse set of packages. Many people prefer other approaches (discussed in section \@ref(packages-why-not-dplyr)). This manual is relevant whether you're using Tidyverse packages or not.
+
+**What this manual covers** 
+
+1. **Getting started** discusses: how to set up R, RStudio and R packages; some key concepts used in a typical line of R code; and how to write code neatly. It finishes with a block of example code that you can run to get some familiarity.
+2. **Types of data objects** discusses the features of the main types of data objects that your code will use, and how to use them. If, instead, you want to dive straight in and learn by doing, you can go straight to chapter 3.
+3. **Sourcing data** discusses some common functions for reading datasets into R, and how to use RStudio projects.
+4. **Functions** provides more detail on how to use and understand R's functions, and how to write your own functions. It also discusses environments, which are basically the structures in which R stores objects. Understanding environments is helpful for being able to write reliable functions.  
+5. **The data.table and magrittr packages** discusses two particularly useful packages for working with data. I use both of these in almost all my R coding.
+6. **Graphs** provides example code for creating various types of graphs. You can use this code as a starting point for making your own graphs.
+
 
